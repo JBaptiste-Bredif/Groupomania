@@ -87,11 +87,8 @@ exports.updateAccount = (req, res, next) => {
 // PUT : '/api/auth/password/:userId'
 exports.updatePassword = (req, res, next) => {
   const user = req.user
-  console.log("🚀 ~ file: controller-user.js ~ line 91 ~ user.password", req.body.oldPassword)
-
   bcrypt.compare(req.body.oldPassword, user.password)
     .then(valid => {
-      console.log("🚀 ~ file: controller-user.js ~ line 94 ~ valid", valid)
       if (!valid) {
         return res.status(401).json({ error: "Mot de passe incorrect ! " })
       }

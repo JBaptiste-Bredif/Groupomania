@@ -2,11 +2,11 @@ const express = require('express')
 const helmet = require("helmet")
 const path = require('path')
 const cors = require('cors')
-const { Sequelize } = require('sequelize')
 // plugin cloundiary ou contentfull 
 require('dotenv').config({ path: process.cwd() + '/.env' })
 
 const app = express()
+const { database } = require('./models/index');
 
 const userRoutes = require('./routes/route-user')
 // const sauceRoutes = require('./routes/route-sauce')
@@ -18,14 +18,14 @@ app.use(express.urlencoded({
     extended: true
 }))
 
-const { sequelize } = require('./models/index');
+
 
 app.use(express.json())
 
 app.use('/images', express.static(path.join(__dirname, 'images')))
 
 
-sequelize.authenticate()
+database.authenticate()
     .then(() => {
         console.log('Connection successfull !')
     })

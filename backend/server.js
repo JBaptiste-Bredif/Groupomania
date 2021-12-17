@@ -37,7 +37,7 @@ const errorHandler = error => {
 
 const server = http.createServer(app);
 
-db.sequelize.sync({ alter: true }).then(function () {
+db.database.sync({ alter: true }).then(function () {
   server.on("error", errorHandler);
   server.on("listening", () => {
     const address = server.address();

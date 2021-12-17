@@ -1,5 +1,5 @@
-module.exports = (sequelize, Sequelize) => {
-  const User = sequelize.define("user", {
+module.exports = (database, Sequelize) => {
+  const User = database.define("user", {
     pseudo: {
       type: Sequelize.STRING,
       allowNull: false
