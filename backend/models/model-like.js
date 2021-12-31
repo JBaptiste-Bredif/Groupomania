@@ -1,0 +1,1 @@
+// id du post - id user   quand on like on find one, si on trouve pas on ajoute, si on trouve on enlève pour delike ( pas de dislike pour le moment )

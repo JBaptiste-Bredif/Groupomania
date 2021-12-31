@@ -20,7 +20,7 @@ exports.signup = async (req, res, next) => {
             .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
             .catch(error => res.status(400).json({ error }))
         })
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => res.status(500).json({ error })) /// rajouter message perso exemple ici : Bcrypt Error
     })
     .catch(error => res.status(500).json({ error }))
 }

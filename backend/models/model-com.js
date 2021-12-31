@@ -1,0 +1,1 @@
+// id / id user / string com / les dates ( voir si utiles ) / id du post
