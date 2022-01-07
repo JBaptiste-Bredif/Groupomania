@@ -9,7 +9,9 @@ const app = express()
 const { database } = require('./models/index');
 
 const userRoutes = require('./routes/route-user')
-// const sauceRoutes = require('./routes/route-sauce')
+const likeRoutes = require('./routes/route-like')
+const commentRoutes = require('./routes/route-comment')
+const publicationRoutes = require('./routes/route-publication')
 
 app.use(helmet()) // XSS Protection
 app.use(cors()) // Headers Access-Control-Allow-Origin settings
@@ -34,6 +36,8 @@ database.authenticate()
     })
 
 app.use('/api/auth', userRoutes)
-// app.use('/api/sauces', sauceRoutes)
+app.use('/api/like', likeRoutes)
+app.use('/api/comment', commentRoutes)
+app.use('/api/publication', publicationRoutes)
 
 module.exports = app

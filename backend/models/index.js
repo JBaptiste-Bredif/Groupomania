@@ -11,5 +11,8 @@ db.Sequelize = Sequelize;
 db.database = database;
 
 db.user = require("./model-user.js")(database, Sequelize);
+db.publication = require("./model-publication.js")(database, Sequelize);
+db.like = require("./model-like.js")(database, Sequelize);
+db.comment = require("./model-comment.js")(database, Sequelize);
 
 module.exports = db;

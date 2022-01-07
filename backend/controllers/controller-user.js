@@ -7,7 +7,7 @@ exports.signup = async (req, res, next) => {
   db.user.findOne({ where: { email: req.body.email } })
     .then(user => {
       if (user) {
-        return res.status(400).json({ error: "Cette email est déjà utilisé" })
+        return res.status(409).json({ error: "Cette email est déjà utilisé" })
       }
       bcrypt.hash(req.body.password, 10)
         .then(hash => {
@@ -18,7 +18,7 @@ exports.signup = async (req, res, next) => {
             admin: false,
           })
             .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-            .catch(error => res.status(400).json({ error }))
+            .catch(error => res.status(500).json({ error }))
         })
         .catch(error => res.status(500).json({ error })) /// rajouter message perso exemple ici : Bcrypt Error
     })
@@ -74,13 +74,13 @@ exports.updateAccount = (req, res, next) => {
     db.user.findOne({ where: { email: req.body.email } })
       .then(result => {
         if (result) {
-          return res.status(400).json({ error: "Cette email est déjà utilisé !" })
+          return res.status(409).json({ error: "Cette email est déjà utilisé !" })
         }
       })
       .catch(error => res.status(500).json({ error }))
   }
   user.update({ pseudo: req.body.pseudo, email: req.body.email, photo: req.body.photo })
-    .then(() => res.status(201).json({ message: 'Informations mises à jours !' }))
+    .then(() => res.status(200).json({ message: 'Informations mises à jours !' }))
     .catch(error => res.status(500).json({ error }))
 }
 
