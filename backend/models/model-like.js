@@ -5,7 +5,7 @@ module.exports = (database, Sequelize) => {
       allowNull: false
     },
     publication_id: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       allowNull: false
     }
   }, {

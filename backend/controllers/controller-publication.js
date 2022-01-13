@@ -2,7 +2,9 @@ const db = require('../models/index.js')
 
 // Il faudra récupérer l'intégralité des publications ( ou voir comment faire pour éviter d'avori à charger trop d'infos )
 // Pour chaque publi il faudra récupérer tous les coms liée a la publi + récupérer le nombre de like présent sur la publi
-// voir si il faut récup la photo de profil de chaue user sur les coms
+// voir si il faut récup la photo de profil de chaque user sur les coms
+// bouton pour voir les commentaires donc appeler la liste des commentaires (controller-comment)
+// donc récupérer seulement la liste des postes
 
 // POST : '/api/publication'
 exports.addPublication = (req, res, next) => {
