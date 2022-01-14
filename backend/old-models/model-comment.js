@@ -17,16 +17,16 @@ module.exports = (database, Sequelize) => {
     timestamps: true,
   })
 
-  Comment.associate = function (models) {
-    Comment.belongsTo(models.publication, {
-      foreignKey: 'publication_id',
-      onDelete: 'CASCADE'
-    })
+  // Comment.associate = function (models) {
+  //   Comment.belongsTo(models.publication, {
+  //     foreignKey: 'publication_id',
+  //     onDelete: 'CASCADE'
+  //   })
 
-    Comment.belongsTo(models.user, {
-      foreignKey: 'user_id',
-      onDelete: 'CASCADE'
-    })
-  }
+  //   Comment.belongsTo(models.user, {
+  //     foreignKey: 'user_id',
+  //     onDelete: 'CASCADE'
+  //   })
+  // }
   return Comment
 }

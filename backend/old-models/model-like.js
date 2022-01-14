@@ -12,16 +12,14 @@ module.exports = (database, Sequelize) => {
     timestamps: false,
   })
 
-  Like.associate = function (models) {
-    Like.belongsTo(models.publication, {
-      foreignKey: 'publication_id',
-      onDelete: 'CASCADE'
-    })
+  // Like.associate = function (models) {
+  //   Like.belongsTo(models.publication, {
+  //     foreignKey: 'publication_id'
+  //   })
 
-    Like.belongsTo(models.user, {
-      foreignKey: 'user_id',
-      onDelete: 'CASCADE'
-    })
-  }
+  //   Like.belongsTo(models.user, {
+  //     foreignKey: 'user_id'
+  //   })
+  // }
   return Like
 }

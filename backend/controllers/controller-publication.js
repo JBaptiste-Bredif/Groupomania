@@ -10,7 +10,7 @@ const db = require('../models/index.js')
 exports.addPublication = (req, res, next) => {
   const user = req.user
   db.publication.create({
-    user_id: user.id,
+    userId: user.id,
     description: req.body.description,
     photo: req.body.photo
   })
@@ -26,7 +26,7 @@ exports.updatePublication = (req, res, next) => {
       if (!publication) {
         return res.status(404).json({ error: 'Publication introuvable !' })
       }
-      if (publication.user_id != user.id) {
+      if (publication.userId != user.id) {
         return res.status(401).json({ error: ' Unauthorized !' })
       }
       publication.update({ description: req.body.description })
@@ -44,7 +44,7 @@ exports.deletePublication = (req, res, next) => {
       if (!publication) {
         return res.status(404).json({ error: 'Publication introuvable !' })
       }
-      if (!user.admin && publication.user_id != user.id) {
+      if (!user.admin && publication.userId != user.id) {
         return res.status(401).json({ error: 'Unauthorized !' })
       }
       publication.destroy()

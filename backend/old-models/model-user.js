@@ -24,22 +24,20 @@ module.exports = (database, Sequelize) => {
   }, {
     indexes: [{ unique: true, fields: ["email"] }],
     timestamps: true,
-    classMethods: {
+    // classMethods: {
 
-      associate: function (models) {
-        // associations can be defined here
-        User.hasMany(models.publication, {
-          onDelete: "cascade",
-          hooks: true
-        });
-      }
-    }
+    //   associate: function (models) {
+    //     // associations can be defined here
+    //     User.hasMany(models.publication, {
+    //       onDelete: "cascade",
+    //       hooks: true
+    //     });
+    //   }
+    // }
   });
 
   // User.associate = function (models) {
   //   User.hasMany(models.publication, {
-  //     foreignKey: 'user_id',
-  //     as: 'publicationDetails',
   //     onDelete: "CASCADE"
   //   })
   // }
