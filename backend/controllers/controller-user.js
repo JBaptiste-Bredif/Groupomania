@@ -4,14 +4,14 @@ const db = require('../models/index.js')
 
 // POST : '/api/auth/signup'
 exports.signup = async (req, res, next) => {
-  db.user.findOne({ where: { email: req.body.email } })
+  db.User.findOne({ where: { email: req.body.email } })
     .then(user => {
       if (user) {
         return res.status(409).json({ error: "Cette email est déjà utilisé" })
       }
       bcrypt.hash(req.body.password, 10)
         .then(hash => {
-          db.user.create({
+          db.User.create({
             pseudo: req.body.pseudo,
             email: req.body.email,
             password: hash,
@@ -27,7 +27,7 @@ exports.signup = async (req, res, next) => {
 
 // POST : '/api/auth/login'
 exports.login = (req, res, next) => {
-  db.user.findOne({ where: { email: req.body.email } })
+  db.User.findOne({ where: { email: req.body.email } })
     .then(user => {
       if (!user) {
         return res.status(404).json({ error: 'Utilisateur non trouvé !' })
@@ -71,7 +71,7 @@ exports.delete = (req, res, next) => { // La suppression devra aussi se faire su
 exports.updateAccount = (req, res, next) => {
   const user = req.user
   if (user.email !== req.body.email) {
-    db.user.findOne({ where: { email: req.body.email } })
+    db.User.findOne({ where: { email: req.body.email } })
       .then(result => {
         if (result) {
           return res.status(409).json({ error: "Cette email est déjà utilisé !" })

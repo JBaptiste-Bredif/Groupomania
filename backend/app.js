@@ -17,7 +17,7 @@ app.use(helmet()) // XSS Protection
 app.use(cors()) // Headers Access-Control-Allow-Origin settings
 
 app.use(express.urlencoded({
-    extended: true
+  extended: true
 }))
 
 app.use(express.json())
@@ -26,12 +26,12 @@ app.use('/images', express.static(path.join(__dirname, 'images')))
 
 
 database.authenticate()
-    .then(() => {
-        console.log('Connection successfull !')
-    })
-    .catch((error) => {
-        console.log('Error : ' + error)
-    })
+  .then(() => {
+    console.log('Connection successfull !')
+  })
+  .catch((error) => {
+    console.log('Error : ' + error)
+  })
 
 app.use('/api/auth', userRoutes)
 app.use('/api/like', likeRoutes)

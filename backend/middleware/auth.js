@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
     // if (!req.params.userId || req.params.userId != userId) { // juste prendre le token pour la req 
     //   res.status(401).json({ error: 'Unauthenticated request !' })
     // }
-    db.user.findOne({ where: { id: userId } })
+    db.User.findOne({ where: { id: userId } })
       .then(user => {
         if (!user) {
           return res.status(404).json({ error: 'Utilisateur introuvable !' })

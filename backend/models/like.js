@@ -9,22 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // models.Like.belongsTo(models.User, {
-      //   foreignKey: {
-      //     allowNull: false
-      //   },
-      //   onDelete: 'CASCADE'
-      // })
+      models.Like.belongsTo(models.User, { foreignKey: 'userId', onDelete: 'cascade' });
 
-      // models.Like.belongsTo(models.Publication, {
-      //   foreignKey: {
-      //     allowNull: false,
-      //   },
-      //   onDelete: 'CASCADE'
-      // })
+      models.Like.belongsTo(models.Publication, { foreignKey: 'publicationId', onDelete: 'cascade' });
     }
   };
   Like.init({
+    userId: { type: DataTypes.INTEGER, allowNull: false },
+    publicationId: { type: DataTypes.INTEGER, allowNull: false }
   }, {
     sequelize,
     modelName: 'Like',

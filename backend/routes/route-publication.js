@@ -5,7 +5,7 @@ const publicationCtrl = require('../controllers/controller-publication')
 const auth = require('../middleware/auth')
 
 router.post('/', auth, publicationCtrl.addPublication)
-router.put('/:publication_id', auth, publicationCtrl.updatePublication)
-router.delete('/:publication_id', auth, publicationCtrl.deletePublication)
+router.put('/:publicationId', auth, publicationCtrl.updatePublication)
+router.delete('/:publicationId', auth, publicationCtrl.deletePublication)
 
 module.exports = router

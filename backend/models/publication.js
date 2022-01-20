@@ -12,12 +12,11 @@ module.exports = (sequelize, DataTypes) => {
       // models.Publication.belongsTo(models.User, {
       //   foreignKey: 'userId'
       // });
-      Publication.belongsTo(models.User, { foreignKey: 'userId', onDelete: 'cascade' })
-      // models.Publication.hasMany(models.Comment,
-      //   { onDelete: 'cascade' });
+      models.Publication.belongsTo(models.User, { foreignKey: 'userId', onDelete: 'cascade' });
 
-      // models.Publication.hasMany(models.Like,
-      //   { onDelete: 'cascade' });
+      models.Publication.hasMany(models.Comment);
+
+      models.Publication.hasMany(models.Like);
     }
   };
   Publication.init({

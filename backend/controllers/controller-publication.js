@@ -9,19 +9,19 @@ const db = require('../models/index.js')
 // POST : '/api/publication'
 exports.addPublication = (req, res, next) => {
   const user = req.user
-  db.publication.create({
+  db.Publication.create({
     userId: user.id,
     description: req.body.description,
     photo: req.body.photo
   })
-    .then((result) => res.status(201).json({ message: 'Publication ajouté !', publication_id: result.id }))
+    .then((result) => res.status(201).json({ message: 'Publication ajouté !', publicationId: result.id }))
     .catch(error => res.status(500).json({ error }))
 }
 
-// PUT : '/api/publication/:publication_id'
+// PUT : '/api/publication/:publicationId'
 exports.updatePublication = (req, res, next) => {
   const user = req.user
-  db.publication.findOne({ where: { id: req.params.publication_id } })
+  db.Publication.findOne({ where: { id: req.params.publicationId } })
     .then(publication => {
       if (!publication) {
         return res.status(404).json({ error: 'Publication introuvable !' })
@@ -36,10 +36,10 @@ exports.updatePublication = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 }
 
-// DELETE : '/api/publication/:publication_id'
+// DELETE : '/api/publication/:publicationId'
 exports.deletePublication = (req, res, next) => {
   const user = req.user
-  db.publication.findOne({ where: { id: req.params.publication_id } })
+  db.Publication.findOne({ where: { id: req.params.publicationId } })
     .then(publication => {
       if (!publication) {
         return res.status(404).json({ error: 'Publication introuvable !' })

@@ -9,19 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // models.Comment.belongsTo(models.User,
-      //   {
-      //     foreignKey: {
-      //       allowNull: false
-      //     }, onDelete: 'CASCADE'
-      //   })
-      // models.Comment.belongsTo(models.Publication,
-      //   {
-      //     foreignKey: 'publicationIdd'
-      //   })
+      models.Comment.belongsTo(models.User, { foreignKey: 'userId', onDelete: 'cascade' });
+
+      models.Comment.belongsTo(models.Publication, { foreignKey: 'publicationId', onDelete: 'cascade' });
     }
   };
   Comment.init({
+    userId: { type: DataTypes.INTEGER, allowNull: false },
+    publicationId: { type: DataTypes.INTEGER, allowNull: false },
     message: { type: DataTypes.TEXT, allowNull: false }
   }, {
     sequelize,
