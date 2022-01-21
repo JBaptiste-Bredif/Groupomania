@@ -4,6 +4,7 @@ const publicationCtrl = require('../controllers/controller-publication')
 // const limit = require('../middleware/limit-connection')
 const auth = require('../middleware/auth')
 
+router.get('/', auth, publicationCtrl.getAllPublications)
 router.post('/', auth, publicationCtrl.addPublication)
 router.put('/:publicationId', auth, publicationCtrl.updatePublication)
 router.delete('/:publicationId', auth, publicationCtrl.deletePublication)
