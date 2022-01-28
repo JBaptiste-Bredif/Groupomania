@@ -17,7 +17,16 @@ module.exports = (sequelize, DataTypes) => {
     pseudo: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false },
     password: { type: DataTypes.STRING, allowNull: false },
-    photo: { type: DataTypes.STRING, allowNull: true },
+    photoUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      default: `${process.env.CLOUD_DEFAULT_ICON_URL}`
+    },
+    photoId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      default: `${process.env.CLOUD_DEFAULT_ICON_ID}`
+    },
     admin: { type: DataTypes.STRING, allowNull: false }
   }, {
     sequelize,

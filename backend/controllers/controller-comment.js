@@ -3,7 +3,7 @@ const db = require('../models/index.js')
 // GET : '/api/comment/:publicationId'
 exports.getAllComments = (req, res, next) => {
   const user = req.user
-  db.Publication.findOne({ where: { id: req.params.publicationId } })
+  db.Publication.findOne({ where: { id: req.params.publicationI_d } })
     .then(publication => {
       if (!publication) {
         return res.status(404).json({ error: 'Publication introuvable !' })
@@ -24,7 +24,7 @@ exports.getAllComments = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error: "" + error }))
     })
-    .catch(error => res.status(500).json({ error: "" + error })); // ? pourquoi ça fonctionne alors que error : error renvoie du vide ? 
+    .catch(error => res.status(500).json({ error: error.message })); // ? pourquoi ça fonctionne alors que error : error renvoie du vide ? 
 }
 
 

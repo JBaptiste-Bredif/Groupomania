@@ -4,7 +4,14 @@ const path = require('path')
 const cors = require('cors')
 // plugin cloundiary ou contentfull 
 require('dotenv').config({ path: process.cwd() + '/.env' })
-
+// const cloudinary = require('cloudinary')
+// direction .ENV
+// cloudinary.config({
+//   cloud_name: 'sample',
+//   api_key: '874837483274837',
+//   api_secret: 'a676b67565c6767a6767d6767f676fe1',
+//   secure: true
+// });
 const app = express()
 const { database } = require('./models/index');
 

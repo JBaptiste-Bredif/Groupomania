@@ -1,4 +1,5 @@
 'use strict';
+require('dotenv').config({ path: process.cwd() + '/.env' })
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Users', {
@@ -21,8 +22,15 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      photo: {
-        type: Sequelize.STRING
+      photoUrl: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: `${process.env.CLOUD_DEFAULT_ICON_URL}`
+      },
+      photoId: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: `${process.env.CLOUD_DEFAULT_ICON_ID}`
       },
       admin: {
         type: Sequelize.BOOLEAN,

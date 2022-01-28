@@ -1,9 +1,17 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const db = require('../models/index.js')
+const fs = require('fs')
+const cloudinary = require('cloudinary').v2
+// direction.ENV
+cloudinary.config({
+  cloud_name: `${process.env.CLOUD_NAME}`,
+  api_key: `${process.env.CLOUD_API_KEY}`,
+  api_secret: `${process.env.CLOUD_API_SECRET}`,
+});
 
 // POST : '/api/auth/signup'
-exports.signup = async (req, res, next) => {
+exports.signup = (req, res, next) => {
   db.User.findOne({ where: { email: req.body.email } })
     .then(user => {
       if (user) {
@@ -18,11 +26,11 @@ exports.signup = async (req, res, next) => {
             admin: false,
           })
             .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-            .catch(error => res.status(500).json({ error }))
+            .catch(error => { return res.status(500).json({ error: error.message }) })
         })
-        .catch(error => res.status(500).json({ error })) /// rajouter message perso exemple ici : Bcrypt Error
+        .catch(error => { return res.status(500).json({ error: error.message }) })
     })
-    .catch(error => res.status(500).json({ error }))
+    .catch(error => { return res.status(500).json({ error: error.message }) })
 }
 
 // POST : '/api/auth/login'
@@ -39,20 +47,26 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({
             message: "Vous êtes connecté ! ",
-            userId: user.id,
+            userData: {
+              pseudo: user.pseudo,
+              email: user.email,
+              photoUrl: user.photoUrl,
+              photoId: user.photoId,
+              admin: user.admin
+            },
             token: jwt.sign(
               { userId: user.id },
               `${process.env.TOKEN_KEY}`
             )
           })
         })
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => { return res.status(500).json({ error: error.message }) })
     })
-    .catch(error => res.status(500).json({ error }))
+    .catch(error => { return res.status(500).json({ error: error.message }) })
 }
 
 // DELETE : '/api/auth/:userId'
-exports.delete = (req, res, next) => { // La suppression devra aussi se faire sur les commentaires de la personnes, sur ces postes ( donc voir comment gérer les commentaires des autres sur le poste supprimé) et voir pour les likes
+exports.delete = (req, res, next) => {
   const user = req.user
   bcrypt.compare(req.body.password, user.password)
     .then(valide => {
@@ -61,27 +75,64 @@ exports.delete = (req, res, next) => { // La suppression devra aussi se faire su
       }
       user.destroy()
         .then(() => res.status(200).json({ message: 'Compte supprimé !' }))
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => { return res.status(500).json({ error: error.message }) })
     })
-    .catch(error => res.status(500).json({ error }))
+    .catch(error => { return res.status(500).json({ error: error.message }) })
 
 }
 
 // PUT : '/api/auth/account/:userId'
 exports.updateAccount = (req, res, next) => {
   const user = req.user
-  if (user.email !== req.body.email) {
-    db.User.findOne({ where: { email: req.body.email } })
+  const data = JSON.parse(req.body.data)
+
+  if (user.email !== data.email) {
+    db.User.findOne({ where: { email: data.email } })
       .then(result => {
         if (result) {
           return res.status(409).json({ error: "Cette email est déjà utilisé !" })
         }
       })
-      .catch(error => res.status(500).json({ error }))
+      .catch(error => {
+        return res.status(500).json({ error: error.message })
+      })
   }
-  user.update({ pseudo: req.body.pseudo, email: req.body.email, photo: req.body.photo })
-    .then(() => res.status(200).json({ message: 'Informations mises à jours !' }))
-    .catch(error => res.status(500).json({ error }))
+  // const filename = user.photo.split('/images/')[1]
+  if (req.file) {
+    const base_url_photo = `./images/${req.file.filename}`
+    // cloudinary.v2.uploader.destroy(public_id, options, callback); destroy old img
+    // File upload (example for promise api)
+    cloudinary.uploader.upload(base_url_photo, { tags: 'avatar', folder: 'icon' })
+      .then(function (image) {
+        // token = public_id
+        user.update({ pseudo: data.pseudo, email: data.email, photoUrl: image.url, photoId: image.public_id })
+          .then(user => {
+            fs.unlink(base_url_photo, () => {
+              res.status(201).json({
+                message: 'Informations mises à jours !',
+                userData: {
+                  pseudo: user.pseudo,
+                  email: user.email,
+                  photoUrl: user.photoUrl,
+                  photoId: user.photoId
+                }
+              })
+            })
+          })
+          .catch(error => { return res.status(500).json({ error: error.message }) })
+      })
+      .catch((err) => {
+        console.log();
+        console.log("** File Upload (Promise)");
+        if (err) { console.warn(err); }
+        return res.status(500).json({ error: error.message })
+      })
+  } else {
+    user.update({ pseudo: data.pseudo, email: data.email })
+      .then(() => res.status(200).json({ message: 'Informations mises à jours !' }))
+      .catch(error => { return res.status(500).json({ error: error.message }) })
+  }
+
 }
 
 // PUT : '/api/auth/password/:userId'
@@ -96,9 +147,9 @@ exports.updatePassword = (req, res, next) => {
         .then(hash => {
           user.update({ password: hash })
             .then(() => res.status(201).json({ message: 'Informations mises à jours !' }))
-            .catch(error => res.status(500).json({ error }))
+            .catch(error => { return res.status(500).json({ error: error.message }) })
         })
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => { return res.status(500).json({ error: error.message }) })
     })
-    .catch(error => res.status(500).json({ error }))
+    .catch(error => { return res.status(500).json({ error: error.message }) })
 }

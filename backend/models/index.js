@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const basename = path.basename(__filename);
 const db = {};
-
+// Renvoyer les informations pour le front sur les controllers (cela évite de faire de la magie noir en vue js)
 const Sequelize = require('sequelize');
 
 const database = new Sequelize(process.env.DB, process.env.DB_LOGIN, process.env.DB_PWD, {
