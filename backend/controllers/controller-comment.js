@@ -3,7 +3,7 @@ const db = require('../models/index.js')
 // GET : '/api/comment/:publicationId'
 exports.getAllComments = (req, res, next) => {
   const user = req.user
-  db.Publication.findOne({ where: { id: req.params.publicationI_d } })
+  db.Publication.findOne({ where: { id: req.params.publicationId } })
     .then(publication => {
       if (!publication) {
         return res.status(404).json({ error: 'Publication introuvable !' })
@@ -13,7 +13,7 @@ exports.getAllComments = (req, res, next) => {
         include: {
           model: db.User,
           required: true,
-          attributes: ["pseudo", "photo"]
+          attributes: ["pseudo", "photoUrl", "photoId"]
         }
       })
         .then((comments) => {
@@ -22,9 +22,9 @@ exports.getAllComments = (req, res, next) => {
           }
           res.status(200).json({ comments })
         })
-        .catch(error => res.status(500).json({ error: "" + error }))
+        .catch(error => { return res.status(500).json({ error: error.message }) })
     })
-    .catch(error => res.status(500).json({ error: error.message })); // ? pourquoi ça fonctionne alors que error : error renvoie du vide ? 
+    .catch(error => { return res.status(500).json({ error: error.message }) })
 }
 
 
@@ -34,23 +34,34 @@ exports.addComment = (req, res, next) => {
   db.Publication.findOne({ where: { id: req.params.publicationId } })
     .then(publication => {
       if (!publication) {
-        return res.status(404).json({ error: 'Publciation introuvable !' })
+        return res.status(404).json({ error: 'Publication introuvable !' })
       }
       db.Comment.create({
         userId: user.id,
         publicationId: req.params.publicationId,
         message: req.body.message
       })
-        .then((result) => res.status(201).json({ message: 'Commentaire ajouté !', comment_id: result.id }))
-        .catch(error => res.status(500).json({ error }))
+        .then((result) => res.status(201).json({
+          message: 'Commentaire ajouté !',
+          comment: {
+            commentId: result.id,
+            message: result.message
+          },
+          user: { // ? voir si on garde dans le temps pour laisser dans le store vue x
+            pseudo: user.pseudo,
+            photoUrl: user.photoUrl,
+            photoId: user.photoId
+          }
+        }))
+        .catch(error => { return res.status(500).json({ error: error.message }) })
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => { return res.status(500).json({ error: error.message }) })
 }
 
-// PUT : '/api/comment/:comment_id'
+// PUT : '/api/comment/:commentId'
 exports.updateComment = (req, res, next) => {
   const user = req.user
-  db.Comment.findOne({ where: { id: req.params.comment_id } })
+  db.Comment.findOne({ where: { id: req.params.commentId } })
     .then(comment => {
       if (!comment) {
         return res.status(404).json({ error: 'Commentaire introuvable !' })
@@ -60,15 +71,15 @@ exports.updateComment = (req, res, next) => {
       }
       comment.update({ message: req.body.message })
         .then(() => res.status(200).json({ message: 'Commentaire mis à jours !' }))
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => { return res.status(500).json({ error: error.message }) })
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => { return res.status(500).json({ error: error.message }) })
 }
 
-// DELETE : '/api/comment/:comment_id'
+// DELETE : '/api/comment/:commentId'
 exports.deleteComment = (req, res, next) => {
   const user = req.user
-  db.Comment.findOne({ where: { id: req.params.comment_id } })
+  db.Comment.findOne({ where: { id: req.params.commentId } })
     .then(comment => {
       if (!comment) {
         return res.status(404).json({ error: 'Commentaire introuvable !' })
@@ -78,7 +89,7 @@ exports.deleteComment = (req, res, next) => {
       }
       comment.destroy()
         .then(() => res.status(200).json({ message: 'Commentaire supprimé !' }))
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => { return res.status(500).json({ error: error.message }) })
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => { return res.status(500).json({ error: error.message }) })
 }

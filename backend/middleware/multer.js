@@ -1,9 +1,11 @@
 const multer = require('multer')
+const path = require('path')
 
 const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
-  'image/png': 'png'
+  'image/png': 'png',
+  'image/gif': 'gif'
 }
 
 const storage = multer.diskStorage({
@@ -18,4 +20,13 @@ const storage = multer.diskStorage({
   }
 })
 
-module.exports = multer({ storage }).single('image')
+module.exports = multer({
+  storage: storage,
+  fileFilter: function (req, file, callback) {
+    var ext = path.extname(file.originalname);
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+      return callback(null, false) // Multer bloque le fichier, la requête continue comme si le fichier n'avais jamais était envoyé
+    }
+    callback(null, true)
+  },
+}).single('image')

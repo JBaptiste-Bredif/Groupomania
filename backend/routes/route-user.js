@@ -10,5 +10,6 @@ router.post('/login', limit.connection(5), userCtrl.login)
 router.delete('/', limit.connection(3), auth, userCtrl.delete)
 router.put('/account', auth, multer, userCtrl.updateAccount)
 router.put('/password', auth, userCtrl.updatePassword)
+router.get('/users', auth, userCtrl.getAllUsers)
 
 module.exports = router

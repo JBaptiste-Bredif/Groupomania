@@ -9,9 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // models.Publication.belongsTo(models.User, {
-      //   foreignKey: 'userId'
-      // });
       models.Publication.belongsTo(models.User, { foreignKey: 'userId', onDelete: 'cascade' });
 
       models.Publication.hasMany(models.Comment);
@@ -22,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
   Publication.init({
     userId: { type: DataTypes.INTEGER, allowNull: false },
     description: { type: DataTypes.STRING, allowNull: false },
-    photo: DataTypes.STRING,
+    photoUrl: { type: DataTypes.STRING, allowNull: true },
+    photoId: { type: DataTypes.STRING, allowNull: true },
     countLikes: { type: DataTypes.INTEGER, defaultValue: 0 },
   }, {
     sequelize,

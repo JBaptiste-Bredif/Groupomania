@@ -17,8 +17,8 @@ module.exports = (req, res, next) => {
         req.user = user
         next()
       })
-      .catch(error => { res.status(500).json({ error }) })
+      .catch(error => { return res.status(500).json({ error: error.message }) })
   } catch (error) {
-    res.status(401).json({ error: 'Unauthenticated request !' })
+    return res.status(401).json({ error: 'Unauthenticated request !' })
   }
 }

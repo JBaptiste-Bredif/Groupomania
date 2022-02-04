@@ -15,11 +15,11 @@ exports.likeOrNot = (req, res, next) => {
               .then(() => {
                 if (publication.countLikes > 0) {
                   publication.decrement('countLikes')
-                    .catch(error => { return res.status(500).json({ error: 'Error on decrement !' }) })
+                    .catch(error => { return res.status(500).json({ error: error.message }) })
                 }
                 res.status(201).json({ message: 'Like supprimé !' })
               })
-              .catch(error => { res.status(500).json({ error }) })
+              .catch(error => { return res.status(500).json({ error: error.message }) })
           } else { // cas pas de like en BDD
             db.Like.create({
               userId: user.id,
@@ -28,11 +28,11 @@ exports.likeOrNot = (req, res, next) => {
               .then(() => {
                 publication.increment('countLikes')
                   .then(() => res.status(201).json({ message: 'Like Ajouté !' }))
-                  .catch(error => res.status(500).json({ error: 'Error on increment' }))
+                  .catch(error => { return res.status(500).json({ error: error.message }) })
               })
-              .catch(error => res.status(500).json({ error: "Error on create Like" }))
+              .catch(error => { return res.status(500).json({ error: error.message }) })
           }
         })
     })
-    .catch(error => res.status(500).json({ error }))
+    .catch(error => { return res.status(500).json({ error: error.message }) })
 }

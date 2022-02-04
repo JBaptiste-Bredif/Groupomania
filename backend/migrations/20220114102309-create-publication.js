@@ -21,8 +21,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      photo: {
-        type: Sequelize.STRING
+      photoUrl: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      photoId: {
+        type: Sequelize.STRING,
+        allowNull: true
       },
       countLikes: {
         type: Sequelize.INTEGER,

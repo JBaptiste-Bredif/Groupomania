@@ -78,13 +78,24 @@ exports.delete = (req, res, next) => {
         .catch(error => { return res.status(500).json({ error: error.message }) })
     })
     .catch(error => { return res.status(500).json({ error: error.message }) })
+}
 
+// GET : '/api/auth/users'
+exports.getAllUsers = (req, res, next) => {
+  db.User.findAll({ attributes: ['pseudo', 'email', 'photoUrl', 'photoId', 'admin'] })
+    .then(users => {
+      res.status(200).json({ users_list: users })
+    })
+    .catch(error => {
+      return res.status(500).json({ error: error.message })
+    })
 }
 
 // PUT : '/api/auth/account/:userId'
 exports.updateAccount = (req, res, next) => {
   const user = req.user
   const data = JSON.parse(req.body.data)
+  const previous_photoId = req.user.photoId
 
   if (user.email !== data.email) {
     db.User.findOne({ where: { email: data.email } })
@@ -100,17 +111,26 @@ exports.updateAccount = (req, res, next) => {
   // const filename = user.photo.split('/images/')[1]
   if (req.file) {
     const base_url_photo = `./images/${req.file.filename}`
-    // cloudinary.v2.uploader.destroy(public_id, options, callback); destroy old img
     // File upload (example for promise api)
-    cloudinary.uploader.upload(base_url_photo, { tags: 'avatar', folder: 'icon' })
-      .then(function (image) {
-        // token = public_id
-        user.update({ pseudo: data.pseudo, email: data.email, photoUrl: image.url, photoId: image.public_id })
-          .then(user => {
+
+    cloudinary.uploader.upload(base_url_photo, { tags: 'avatar', folder: 'icon' }, function (error, image) {
+      if (error) {
+        fs.unlink(base_url_photo, () => {
+          return res.status(500).json({ error: error.message })
+        })
+      }
+      // url = image.url 
+      // id = image.public_id
+      user.update({ pseudo: data.pseudo, email: data.email, photoUrl: image.url, photoId: image.public_id })
+        .then(user => {
+          cloudinary.uploader.destroy(previous_photoId, { tags: 'avatar', folder: 'icon' }, function (error) {
+            if (error) {
+              return res.status(500).json({ error: error.message })
+            }
             fs.unlink(base_url_photo, () => {
               res.status(201).json({
                 message: 'Informations mises à jours !',
-                userData: {
+                user: {
                   pseudo: user.pseudo,
                   email: user.email,
                   photoUrl: user.photoUrl,
@@ -119,20 +139,22 @@ exports.updateAccount = (req, res, next) => {
               })
             })
           })
-          .catch(error => { return res.status(500).json({ error: error.message }) })
-      })
-      .catch((err) => {
-        console.log();
-        console.log("** File Upload (Promise)");
-        if (err) { console.warn(err); }
-        return res.status(500).json({ error: error.message })
-      })
+        })
+        .catch(error => { return res.status(500).json({ error: error.message }) })
+    })
   } else {
     user.update({ pseudo: data.pseudo, email: data.email })
-      .then(() => res.status(200).json({ message: 'Informations mises à jours !' }))
+      .then(() => res.status(200).json({
+        message: 'Informations mises à jours !',
+        user: {
+          pseudo: user.pseudo,
+          email: user.email,
+          photoUrl: user.photoUrl,
+          photoId: user.photoId
+        }
+      }))
       .catch(error => { return res.status(500).json({ error: error.message }) })
   }
-
 }
 
 // PUT : '/api/auth/password/:userId'
@@ -146,7 +168,10 @@ exports.updatePassword = (req, res, next) => {
       bcrypt.hash(req.body.newPassword, 10)
         .then(hash => {
           user.update({ password: hash })
-            .then(() => res.status(201).json({ message: 'Informations mises à jours !' }))
+            .then(() => res.status(201).json({
+              message: 'Informations mises à jours !',
+              newPassword: req.body.newPassword
+            }))
             .catch(error => { return res.status(500).json({ error: error.message }) })
         })
         .catch(error => { return res.status(500).json({ error: error.message }) })

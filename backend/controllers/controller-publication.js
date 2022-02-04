@@ -1,8 +1,12 @@
 const db = require('../models/index.js')
-
+const fs = require('fs')
+const cloudinary = require('cloudinary').v2
 // voir si il faut récup la photo de profil de chaque user sur les coms
-// bouton pour voir les commentaires donc appeler la liste des commentaires (controller-comment)
-// donc récupérer seulement la liste des postes
+cloudinary.config({
+  cloud_name: `${process.env.CLOUD_NAME}`,
+  api_key: `${process.env.CLOUD_API_KEY}`,
+  api_secret: `${process.env.CLOUD_API_SECRET}`,
+});
 
 // GET : '/api/publication/:publicationId'
 exports.getAllPublications = (req, res, next) => {
@@ -11,7 +15,7 @@ exports.getAllPublications = (req, res, next) => {
     include: {
       model: db.User,
       required: true,
-      attributes: ["pseudo", "photo"]
+      attributes: ["pseudo", "photoUrl", "photoId"]
     }
   })
     .then(publications => {
@@ -20,19 +24,63 @@ exports.getAllPublications = (req, res, next) => {
       }
       res.status(200).json({ publications })
     })
-    .catch(error => res.status(500).json({ error: "" + error })); // ? pourquoi ça fonctionne alors que error : error renvoie du vide ? 
+    .catch(error => { return res.status(500).json({ error: error.message }) })
 }
 
 // POST : '/api/publication'
 exports.addPublication = (req, res, next) => {
   const user = req.user
-  db.Publication.create({
-    userId: user.id,
-    description: req.body.description,
-    photo: req.body.photo
-  })
-    .then((result) => res.status(201).json({ message: 'Publication ajouté !', publicationId: result.id }))
-    .catch(error => res.status(500).json({ error }))
+  const data = JSON.parse(req.body.data)
+  if (req.file) {
+    const base_url_photo = `./images/${req.file.filename}`
+    // File upload (example for promise api)
+    cloudinary.uploader.upload(base_url_photo, { tags: 'content', folder: 'publication' }, function (error, image) {
+
+      if (error) {
+        fs.unlink(base_url_photo, () => {
+          return res.status(500).json({ error: error.message })
+        })
+      }
+      fs.unlink(base_url_photo, () => {
+        db.Publication.create({
+          userId: user.id,
+          description: data.description,
+          photoUrl: image.url,
+          photoId: image.public_id,
+        })
+          .then((result) => {
+            res.status(201).json({
+              message: 'Publication ajouté !',
+              publication: {
+                publicationId: result.id,
+                description: result.description,
+                photoUrl: result.photoUrl,
+                photoId: result.photoId,
+                createdAt: result.createdAt
+              }
+            })
+          })
+          .catch(error => { return res.status(500).json({ error: error.message }) })
+      })
+    })
+  } else {
+    db.Publication.create({
+      userId: user.id,
+      description: data.description
+    })
+      .then((result) => res.status(201).json({
+        message: 'Publication ajouté !',
+        publication: {
+          publicationId: result.id,
+          description: result.description,
+          photoUrl: result.photoUrl,
+          photoId: result.photoId,
+          createdAt: result.createdAt
+        }
+      }))
+      .catch(error => { return res.status(500).json({ error: error.message }) })
+  }
+
 }
 
 // PUT : '/api/publication/:publicationId'
@@ -48,9 +96,9 @@ exports.updatePublication = (req, res, next) => {
       }
       publication.update({ description: req.body.description })
         .then(() => res.status(200).json({ message: 'Publication mis à jours !' }))
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => { return res.status(500).json({ error: error.message }) })
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => { return res.status(500).json({ error: error.message }) });
 }
 
 // DELETE : '/api/publication/:publicationId'
@@ -64,9 +112,16 @@ exports.deletePublication = (req, res, next) => {
       if (!user.admin && publication.userId != user.id) {
         return res.status(401).json({ error: 'Unauthorized !' })
       }
+      if (publication.photoId) {
+        cloudinary.uploader.destroy(publication.photoId, { tags: 'content', folder: 'publication' }, function (error) {
+          if (error) {
+            return res.status(500).json({ error: error.message })
+          }
+        })
+      }
       publication.destroy()
         .then(() => res.status(200).json({ message: 'Publication supprimé !' }))
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => { return res.status(500).json({ error: error.message }) })
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => { return res.status(500).json({ error: error.message }) });
 }
