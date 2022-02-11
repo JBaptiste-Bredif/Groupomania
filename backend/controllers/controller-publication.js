@@ -30,7 +30,12 @@ exports.getAllPublications = (req, res, next) => {
 // POST : '/api/publication'
 exports.addPublication = (req, res, next) => {
   const user = req.user
-  const data = JSON.parse(req.body.data)
+  let data = []
+  try {
+    data = JSON.parse(req.body.data)
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
   if (req.file) {
     const base_url_photo = `./images/${req.file.filename}`
     // File upload (example for promise api)

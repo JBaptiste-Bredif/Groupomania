@@ -94,7 +94,12 @@ exports.getAllUsers = (req, res, next) => {
 // PUT : '/api/auth/account/:userId'
 exports.updateAccount = (req, res, next) => {
   const user = req.user
-  const data = JSON.parse(req.body.data)
+  let data = []
+  try {
+    data = JSON.parse(req.body.data)
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
   const previous_photoId = req.user.photoId
 
   if (user.email !== data.email) {
