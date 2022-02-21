@@ -44,6 +44,13 @@ const router = new createRouter({
   routes,
 });
 
+// router.beforeEach((to, from) => {
+//   console.log("🚀 ~ file: index.js ~ line 48 ~ router.beforeEach ~ to, from", to, from)
+//   // Retourne sur login si local storage clean
+//   // explicitly return false to cancel the navigation 
+//   return false
+// })
+
 router.afterEach((to, from) => {
   console.log(to, from);
   document.title = to.meta.title;

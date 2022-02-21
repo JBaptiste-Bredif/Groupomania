@@ -9,7 +9,7 @@ class API_CONSTRUCTOR {
     const contentType = options.isFormData ? {} : { 'Content-Type': 'application/json' }
     return {
       ...contentType,
-      Authorization: 'Bearer ' + localStorage.getItem('userToken')
+      Authorization: 'Bearer ' + localStorage.getItem('token')
     }
   }
 
@@ -53,6 +53,7 @@ class API_CONSTRUCTOR {
 
   async handleResponse(response) {
     if (response.status == 401) {
+      console.log(response)
       localStorage.clear()
       router.push('/login')
     }

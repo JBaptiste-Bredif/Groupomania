@@ -26,6 +26,9 @@ export default {
 }
 #app {
   max-width: 100%;
+  min-width: 80%;
+  display: flex;
+  justify-content: center;
 }
 body {
   background-color: #ffd7d7;
@@ -79,5 +82,9 @@ img {
 }
 .button:disabled {
   cursor: not-allowed;
+}
+img {
+  display: block;
+  max-width: 100%;
 }
 </style>

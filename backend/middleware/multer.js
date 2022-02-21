@@ -24,7 +24,7 @@ module.exports = multer({
   storage: storage,
   fileFilter: function (req, file, callback) {
     var ext = path.extname(file.originalname);
-    if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+    if (ext.toUpperCase() !== '.PNG' && ext.toUpperCase() !== '.JPG' && ext.toUpperCase() !== '.GIF' && ext.toUpperCase() !== '.JPEG') {
       return callback(null, false) // Multer bloque le fichier, la requête continue comme si le fichier n'avais jamais était envoyé
     }
     callback(null, true)
