@@ -24,23 +24,72 @@
     <div class="custom">
       <img :src="image" />
     </div>
-    <p v-if="!showComments" @click="getAllComments">
+    <p
+      v-if="!showComments"
+      @click="getAllComments"
+      class="cursor-pointer mt-5 underline underline-offset-2 text-gray-600"
+    >
       Afficher les commentaires
     </p>
-    <p v-else @click="updateShowStatus">Cacher les commentaires</p>
+    <p
+      v-else
+      @click="updateShowStatus"
+      class="cursor-pointer mt-5 underline underline-offset-2 text-gray-600"
+    >
+      Cacher les commentaires
+    </p>
     <div v-if="showComments">
       <div v-if="commentsAreNotEmpty">
-        {{ comments }}
+        <div v-for="comment in comments" :key="comment.id">
+          <Comment
+            :id="comment.id"
+            :avatar="comment.User.photoUrl"
+            :pseudo="comment.User.pseudo"
+            :message="comment.message"
+            :createdAt="comment.createdAt"
+            :updatedAt="comment.updatedAt"
+            :userId="comment.userId"
+            @deleteComment="deleteComment"
+          />
+          <!-- @deleteComment="deleteComment" -->
+        </div>
       </div>
-      <p v-else>Aucun commentaire sur cette publication</p>
+      <p v-else class="mt-2 font-medium">
+        Aucun commentaire sur cette publication
+      </p>
+    </div>
+    <div class="mt-2 rounded-2xl border-4 flex items-center">
+      <input
+        v-model="comment"
+        type="text"
+        placeholder="Ajouter un commentaire"
+        class="grow rounded-l-2xl p-2"
+      />
+      <button
+        class="content-center rounded-r-2xl w-10 aspect-square hover:scale-150"
+        @click="addComment"
+      >
+        <i class="fas fa-paper-plane"></i>
+      </button>
     </div>
   </div>
 </template>
 <script>
 import { API } from "@/services/API.js";
+import Comment from "@/components/Comment.vue";
 import moment from "moment";
 
 export default {
+  data() {
+    return {
+      showComments: false,
+      comments: [],
+      comment: "",
+    };
+  },
+  components: {
+    Comment,
+  },
   props: {
     id: {
       type: Number,
@@ -72,7 +121,6 @@ export default {
   },
   computed: {
     commentsAreNotEmpty: function () {
-      console.log(this.comments.length);
       if (this.comments.length > 0) {
         return true;
       } else {
@@ -111,12 +159,28 @@ export default {
         });
       }
     },
-  },
-  data() {
-    return {
-      showComments: false,
-      comments: [],
-    };
+    addComment: function () {
+      API.post("/comment/" + this.id, { message: this.comment }).then(
+        (response) => {
+          if (!response.error) {
+            this.getAllComments();
+          }
+        }
+      );
+    },
+    deleteComment: function (commentId) {
+      const self = this;
+      API.delete("/comment/" + commentId).then((response) => {
+        if (response.error) {
+          return false;
+        }
+        self.comments = self.comments.filter(function (comment) {
+          if (comment.id !== commentId) {
+            return comment;
+          }
+        });
+      });
+    },
   },
 };
 </script>

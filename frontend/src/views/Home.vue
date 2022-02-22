@@ -9,7 +9,7 @@
       />
     </div>
     <div v-for="publication in publications" v-bind:key="publication.id">
-      <Publications
+      <Publication
         :id="publication.id"
         :avatar="publication.User.photoUrl"
         :pseudo="publication.User.pseudo"
@@ -29,27 +29,12 @@
 
 <script>
 import { API } from "@/services/API.js";
-import Publications from "@/components/Publication.vue";
+import Publication from "@/components/Publication.vue";
 
 export default {
   name: "Home",
   components: {
-    Publications,
-  },
-  methods: {
-    deletePublication: function (publicationId) {
-      const self = this;
-      API.delete("/publication/" + publicationId).then((response) => {
-        if (response.error) {
-          return false;
-        }
-        self.publications = self.publications.filter(function (publication) {
-          if (publication.id !== publicationId) {
-            return publication;
-          }
-        });
-      });
-    },
+    Publication,
   },
   data() {
     return {
@@ -71,7 +56,21 @@ export default {
         console.log("🚀 ~ file: Home.vue ~ line 39 ~ mounted ~ error", error);
       });
   },
-  computed() {},
+  methods: {
+    deletePublication: function (publicationId) {
+      const self = this;
+      API.delete("/publication/" + publicationId).then((response) => {
+        if (response.error) {
+          return false;
+        }
+        self.publications = self.publications.filter(function (publication) {
+          if (publication.id !== publicationId) {
+            return publication;
+          }
+        });
+      });
+    },
+  },
 };
 </script>
 
