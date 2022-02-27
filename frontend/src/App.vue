@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <!-- <div id="app"> -->
+  <router-view />
+  <!-- </div> -->
 </template>
 
 <script>
@@ -25,10 +25,9 @@ export default {
   box-sizing: border-box;
 }
 #app {
-  max-width: 100%;
-  min-width: 80%;
-  display: flex;
-  justify-content: center;
+  max-width: 90%;
+  min-width: 90%;
+  height: 100%;
 }
 body {
   background-color: #ffd7d7;
@@ -40,6 +39,7 @@ body {
 }
 img {
   max-width: 100%;
+  max-height: 25rem;
   border-radius: 8px;
 }
 .card {

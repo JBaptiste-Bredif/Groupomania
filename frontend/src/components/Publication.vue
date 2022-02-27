@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex w-full flex-col mx-auto justify-around p-5 bg-white rounded-xl"
+    class="flex w-full flex-col mx-auto justify-around p-5 bg-white rounded-xl gap-4"
   >
     <div class="flex items-center w-full space-x-2">
       <img class="rounded-full icon" :src="avatar" width="40" height="40" />
@@ -11,30 +11,28 @@
       <div v-if="canDelete" class="grow flex justify-end">
         <button
           class="bg-red-600 w-8 aspect-square text-white font-semibold rounded"
-          @click="emitDeleteEvent"
+          @click="emitDeleteEvent()"
           title="Supprimer la publication"
         >
           X
         </button>
       </div>
     </div>
-    <div class="mt-4">
+    <div class="">
       {{ description }}
     </div>
-    <div class="custom">
-      <img :src="image" />
-    </div>
+    <img v-if="image" class="mx-auto" :src="image" />
     <p
       v-if="!showComments"
-      @click="getAllComments"
-      class="cursor-pointer mt-5 underline underline-offset-2 text-gray-600"
+      @click="getAllComments()"
+      class="cursor-pointer underline underline-offset-2 text-gray-600"
     >
       Afficher les commentaires
     </p>
     <p
       v-else
-      @click="updateShowStatus"
-      class="cursor-pointer mt-5 underline underline-offset-2 text-gray-600"
+      @click="updateShowStatus()"
+      class="cursor-pointer underline underline-offset-2 text-gray-600"
     >
       Cacher les commentaires
     </p>
@@ -67,7 +65,7 @@
       />
       <button
         class="content-center rounded-r-2xl w-10 aspect-square hover:scale-150"
-        @click="addComment"
+        @click="addComment()"
       >
         <i class="fas fa-paper-plane"></i>
       </button>
@@ -164,6 +162,7 @@ export default {
         (response) => {
           if (!response.error) {
             this.getAllComments();
+            this.comment = "";
           }
         }
       );
@@ -184,8 +183,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-.custom {
-  max-width: 400px;
-}
-</style>
+<style scoped></style>

@@ -1,8 +1,8 @@
 <template>
   <div
-    class="flex justify-between items-center w-full my-2 border-2 border-gray-400 rounded-2xl p-2"
+    class="flex justify-between items-center w-full my-2 border-2 border-gray-400 rounded-2xl p-2 gap-4"
   >
-    <div>
+    <div class="grow">
       <div class="flex items-center w-full space-x-2">
         <img class="rounded-full icon" :src="avatar" width="30" height="30" />
         <div class="flex items-center w-full space-x-2">
@@ -11,11 +11,17 @@
         </div>
         <div v-if="canDelete" class="grow flex justify-end"></div>
       </div>
-      <p>{{ message }}</p>
+      <p class="comment__text">{{ message }}</p>
+      <!-- <input type="text" :value="message" :disabled="!changeComment" /> -->
+      <!-- <textarea
+        :value="message"
+        :disabled="!changeComment"
+        class="w-full text-justify"
+      ></textarea> -->
     </div>
     <button
-      class="bg-red-600 w-8 aspect-square text-white font-semibold rounded"
-      @click="emitDeleteEvent"
+      class="bg-red-600 w-8 aspect-square text-white font-semibold rounded comment__delete"
+      @click="emitDeleteEvent()"
       title="Supprimer la publication"
     >
       X
@@ -25,6 +31,11 @@
 <script>
 import moment from "moment";
 export default {
+  data() {
+    return {
+      changeComment: false,
+    };
+  },
   props: {
     id: {
       type: Number,
@@ -77,4 +88,18 @@ export default {
   },
 };
 </script>
-<style lang=""></style>
+<style scoped>
+.comment__delete {
+  min-width: 2.2em;
+}
+.comment__text {
+  overflow-wrap: break-word;
+  word-break: break-all;
+  max-width: 100%;
+}
+textarea {
+  background-color: white;
+  resize: none;
+  height: auto;
+}
+</style>

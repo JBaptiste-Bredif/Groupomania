@@ -28,8 +28,28 @@ const store = createStore({
   },
   actions: {
     login: ({ commit }, userInfos) => {
+      commit('SET_STATUS', 'loading');
       return new Promise((resolve, reject) => {
         API.post('/auth/login', userInfos)
+          .then(function (response) {
+            if (!response.error) {
+              commit('SET_STATUS', '');
+              commit('LOG_USER', response);
+              resolve(response);
+            } else {
+              commit('SET_STATUS', 'error_login');
+              reject(response);
+            }
+          })
+          .catch(function (error) {
+            commit('SET_STATUS', 'error_login');
+            reject(error);
+          });
+      });
+    },
+    relog: ({ commit }) => {
+      return new Promise((resolve, reject) => {
+        API.post('/auth/relog')
           .then(function (response) {
             if (!response.error) {
               commit('SET_STATUS', '');

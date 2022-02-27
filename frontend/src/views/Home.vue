@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-10">
+  <div class="flex flex-col gap-10 max-w-2xl mx-auto">
     <div class="form-row">
       <input
         v-model="email"

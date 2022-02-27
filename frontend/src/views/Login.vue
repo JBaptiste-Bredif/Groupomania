@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card mx-auto">
     <h1 class="card__title" v-if="mode == 'login'">Connexion</h1>
     <h1 class="card__title" v-else>Inscription</h1>
     <p class="card__subtitle" v-if="mode == 'login'">
@@ -79,7 +79,22 @@ export default {
       password: "",
     };
   },
-  mounted: function () {},
+  mounted: function () {
+    //  ! Voir si au bonne endroit
+    const token = localStorage.getItem("token");
+    const self = this;
+    if (token) {
+      this.$store.dispatch("relog").then(
+        function (res) {
+          console.log("🚀 ~ file: Login.vue ~ line 119 ~ res", res);
+          self.$router.push("/");
+        },
+        function (error) {
+          console.log("🚀 ~ file: Login.vue ~ line 122 ~ error", error);
+        }
+      );
+    }
+  },
   computed: {
     validatedFields: function () {
       if (this.mode == "create") {
