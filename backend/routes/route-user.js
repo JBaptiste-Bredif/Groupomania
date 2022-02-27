@@ -7,6 +7,7 @@ const multer = require('../middleware/multer')
 
 router.post('/signup', userCtrl.signup)
 router.post('/login', limit.connection(100), userCtrl.login)
+router.post('/relog', limit.connection(100), auth, userCtrl.relog)
 router.delete('/', limit.connection(3), auth, userCtrl.delete)
 router.put('/account', auth, multer, userCtrl.updateAccount)
 router.put('/password', auth, userCtrl.updatePassword)

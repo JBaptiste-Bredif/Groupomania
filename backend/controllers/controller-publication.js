@@ -16,7 +16,10 @@ exports.getAllPublications = (req, res, next) => {
       model: db.User,
       required: true,
       attributes: ["pseudo", "photoUrl", "photoId"]
-    }
+    },
+    order: [
+      ['createdAt', 'DESC']
+    ]
   })
     .then(publications => {
       if (!publications) {

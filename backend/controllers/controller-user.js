@@ -66,6 +66,25 @@ exports.login = (req, res, next) => {
     .catch(error => { return res.status(500).json({ error: error.message }) })
 }
 
+// POST : '/api/auth/relog'
+exports.relog = (req, res, next) => { // fonction qui passe par auth avant donc si le auth n'as pas annulé la requête c'est donc un token valide
+  const user = req.user
+  res.status(200).json({
+    message: "Vous êtes connecté ! ",
+    userData: {
+      pseudo: user.pseudo,
+      email: user.email,
+      photoUrl: user.photoUrl,
+      photoId: user.photoId,
+      userId: user.id,
+      admin: user.admin
+    },
+    token: jwt.sign(
+      { userId: user.id },
+      `${process.env.TOKEN_KEY}`
+    )
+  })
+}
 // DELETE : '/api/auth/:userId'
 exports.delete = (req, res, next) => {
   const user = req.user
