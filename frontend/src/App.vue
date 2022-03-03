@@ -41,6 +41,7 @@ img {
   max-width: 100%;
   max-height: 25rem;
   border-radius: 8px;
+  display: block;
 }
 .card {
   max-width: 100%;
@@ -83,8 +84,10 @@ img {
 .button:disabled {
   cursor: not-allowed;
 }
-img {
-  display: block;
-  max-width: 100%;
+
+@media (max-width: 600px) {
+  body {
+    padding: 12px;
+  }
 }
 </style>

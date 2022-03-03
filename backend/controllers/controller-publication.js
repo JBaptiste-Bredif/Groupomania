@@ -60,11 +60,12 @@ exports.addPublication = (req, res, next) => {
             res.status(201).json({
               message: 'Publication ajouté !',
               publication: {
-                publicationId: result.id,
-                description: result.description,
-                photoUrl: result.photoUrl,
-                photoId: result.photoId,
-                createdAt: result.createdAt
+                User: {
+                  photoUrl: user.photoUrl,
+                  pseudo: user.pseudo
+                },
+                // dataValues est l'object où se trouve toute les valeurs récupérées de la BDD
+                ...result.dataValues
               }
             })
           })
@@ -79,11 +80,12 @@ exports.addPublication = (req, res, next) => {
       .then((result) => res.status(201).json({
         message: 'Publication ajouté !',
         publication: {
-          publicationId: result.id,
-          description: result.description,
-          photoUrl: result.photoUrl,
-          photoId: result.photoId,
-          createdAt: result.createdAt
+          User: {
+            photoUrl: user.photoUrl,
+            pseudo: user.pseudo
+          },
+          // dataValues est l'object où se trouve toute les valeurs récupérées de la BDD
+          ...result.dataValues
         }
       }))
       .catch(error => { return res.status(500).json({ error: error.message }) })

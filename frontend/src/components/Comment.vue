@@ -9,9 +9,8 @@
           <p class="font-medium">{{ pseudo }}</p>
           <p class="text-xs">{{ timestamp }}</p>
         </div>
-        <div v-if="canDelete" class="grow flex justify-end"></div>
       </div>
-      <p class="comment__text">{{ message }}</p>
+      <p class="comment__text p-2">{{ message }}</p>
       <!-- <input type="text" :value="message" :disabled="!changeComment" /> -->
       <!-- <textarea
         :value="message"
@@ -20,6 +19,7 @@
       ></textarea> -->
     </div>
     <button
+      v-if="canDelete"
       class="bg-red-600 w-8 aspect-square text-white font-semibold rounded comment__delete"
       @click="emitDeleteEvent()"
       title="Supprimer la publication"
