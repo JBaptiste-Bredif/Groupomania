@@ -22,20 +22,31 @@
       {{ description }}
     </div>
     <img v-if="image" class="mx-auto" :src="image" />
-    <p
-      v-if="!showComments"
-      @click="getAllComments()"
-      class="cursor-pointer underline underline-offset-2 text-gray-600"
-    >
-      Afficher les commentaires
-    </p>
-    <p
-      v-else
-      @click="updateShowStatus()"
-      class="cursor-pointer underline underline-offset-2 text-gray-600"
-    >
-      Cacher les commentaires
-    </p>
+    <div class="flex justify-between">
+      <p
+        v-if="!showComments"
+        @click="getAllComments()"
+        class="cursor-pointer underline underline-offset-2 text-gray-600"
+      >
+        Afficher les commentaires
+      </p>
+      <p
+        v-else
+        @click="updateShowStatus()"
+        class="cursor-pointer underline underline-offset-2 text-gray-600"
+      >
+        Cacher les commentaires
+      </p>
+      <div class="flex gap-4 items-center">
+        <span>
+          {{ countLikes }}
+        </span>
+        <button @click="likeOrNot()" class="text-xl">
+          <i v-if="isLiked" class="fas fa-heart text-green-700"></i>
+          <i v-else class="far fa-heart"></i>
+        </button>
+      </div>
+    </div>
     <div v-if="showComments">
       <div v-if="commentsAreNotEmpty">
         <div v-for="comment in comments" :key="comment.id">
@@ -83,6 +94,7 @@ export default {
       showComments: false,
       comments: [],
       comment: "",
+      listUsers: [],
     };
   },
   components: {
@@ -113,17 +125,24 @@ export default {
     image: {
       type: String,
     },
-    countLikes: {
-      type: Number,
+    arrayUsersLike: {
+      type: Array,
     },
   },
+  mounted: function () {
+    this.arrayUsersLike.forEach((elt) => {
+      this.listUsers.push(elt.userId);
+    });
+  },
   computed: {
+    countLikes: function () {
+      return this.listUsers.length;
+    },
+    isLiked: function () {
+      return this.listUsers.includes(this.userId);
+    },
     commentsAreNotEmpty: function () {
-      if (this.comments.length > 0) {
-        return true;
-      } else {
-        return false;
-      }
+      return this.comments.length > 0;
     },
     canDelete: function () {
       if (
@@ -173,11 +192,24 @@ export default {
         if (response.error) {
           return false;
         }
-        self.comments = self.comments.filter(function (comment) {
-          if (comment.id !== commentId) {
-            return comment;
+        self.comments = self.comments.filter(
+          (comment) => comment.id !== commentId
+        );
+      });
+    },
+    likeOrNot: function () {
+      const self = this;
+      console.log(self.listUsers); // ! mentorat pourquoi ma list est dégeux
+      API.post("/like/" + this.id).then((response) => {
+        if (!response.error) {
+          if (response.like) {
+            self.listUsers.push(self.userId);
+          } else {
+            self.listUsers = self.listUsers.filter(
+              (userId) => userId != self.userId
+            );
           }
-        });
+        }
       });
     },
   },

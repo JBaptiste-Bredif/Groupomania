@@ -12,11 +12,18 @@ cloudinary.config({
 exports.getAllPublications = (req, res, next) => {
   const user = req.user
   db.Publication.findAll({
-    include: {
-      model: db.User,
-      required: true,
-      attributes: ["pseudo", "photoUrl", "photoId"]
-    },
+    include: [
+      {
+        model: db.User,
+        required: true,
+        attributes: ["pseudo", "photoUrl", "photoId"]
+      },
+      {
+        model: db.Like,
+        attributes: ["userId"],
+      },
+    ]
+    ,
     order: [
       ['createdAt', 'DESC']
     ]
@@ -60,6 +67,7 @@ exports.addPublication = (req, res, next) => {
             res.status(201).json({
               message: 'Publication ajouté !',
               publication: {
+                Likes: [],
                 User: {
                   photoUrl: user.photoUrl,
                   pseudo: user.pseudo
@@ -80,6 +88,7 @@ exports.addPublication = (req, res, next) => {
       .then((result) => res.status(201).json({
         message: 'Publication ajouté !',
         publication: {
+          Likes: [],
           User: {
             photoUrl: user.photoUrl,
             pseudo: user.pseudo

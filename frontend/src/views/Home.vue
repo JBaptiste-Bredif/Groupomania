@@ -16,10 +16,10 @@
         :pseudo="publication.User.pseudo"
         :description="publication.description"
         :image="publication.photoUrl"
-        :countLikes="publication.countLikes"
         :createdAt="publication.createdAt"
         :updatedAt="publication.updatedAt"
         :userId="publication.userId"
+        :arrayUsersLike="publication.Likes"
         @deletePublication="deletePublication"
       />
       <!-- @deletePublication="(val) => deletePublication" NE FONCTIONNE PAS -->
@@ -31,6 +31,7 @@
       @closePublicationModal="togglePublicationModal()"
       @publish="publish($event)"
     />
+    <!-- !mentorat pourquoi avoir besoins du $event si on veut mettre les () pour désigner la fonction -->
   </div>
 </template>
 
