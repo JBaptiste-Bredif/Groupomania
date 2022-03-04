@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
-import About from '@/views/About.vue';
+import Profil from '@/views/Profil.vue';
 import NotFound from '@/views/NotFound.vue';
 
 const routes = [
@@ -10,15 +10,15 @@ const routes = [
     path: '/',
     component: Home,
     meta: {
-      title: 'Accueil'
+      title: 'Groupomania - Accueil'
     }
   },
   {
-    name: 'About',
-    path: '/about',
-    component: About,
+    name: 'Profil',
+    path: '/profil',
+    component: Profil,
     meta: {
-      title: 'A Propos'
+      title: 'Groupomania - Profil'
     }
   },
   {
@@ -26,7 +26,7 @@ const routes = [
     path: '/login',
     component: Login,
     meta: {
-      title: 'A Propos'
+      title: 'Groupomania - Connexion'
     }
   },
   {
@@ -34,7 +34,7 @@ const routes = [
     path: '/:pathMatch(.*)',
     component: NotFound,
     meta: {
-      title: '404 Not Found'
+      title: 'Groupomania - 404'
     }
   }
 ];

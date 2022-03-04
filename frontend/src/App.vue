@@ -1,40 +1,53 @@
 <template>
-  <!-- <div id="app"> -->
-  <router-view />
-  <!-- </div> -->
+  <div class="min-h-screen min-w-screen">
+    <!-- mentorat : pourquoi on ne peux pas mettre le id="app" => duplication du app  -->
+    <Header v-if="isAuthenticated" />
+    <main class="mx-auto min-h-screen min-w-screen">
+      <router-view />
+    </main>
+  </div>
 </template>
 
 <script>
+import Header from "@/components/TheHeader.vue";
 export default {
   name: "App",
   mounted: function () {
-    if (this.$store.state.token == -1) {
+    if (!this.isAuthenticated) {
       this.$router.push("/login");
       return;
     }
+  },
+  computed: {
+    isAuthenticated: function () {
+      return this.$store.state.token !== -1;
+    },
+  },
+  components: {
+    Header,
   },
 };
 </script>
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;800&display=swap");
-* {
+body,
+html {
   font-family: "Poppins", sans-serif;
+  scroll-behavior: smooth;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  background-color: #ffd7d7;
 }
-#app {
+/* #app {
   max-width: 90%;
   min-width: 90%;
   height: 100%;
-}
-body {
-  background-color: #ffd7d7;
+} */
+main {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
   padding: 32px;
 }
 img {
@@ -83,11 +96,5 @@ img {
 }
 .button:disabled {
   cursor: not-allowed;
-}
-
-@media (max-width: 600px) {
-  body {
-    padding: 12px;
-  }
 }
 </style>

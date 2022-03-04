@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
-import { API } from '@/services/API.js'
+import { API } from '@/services/API.js';
+import router from '@/router/index';
 
 const store = createStore({
   state: {
@@ -24,7 +25,10 @@ const store = createStore({
       state.user = user.userData;
       state.token = user.token;
       localStorage.setItem('token', user.token);
-    }
+    },
+    DISCONNECT: function (state) {
+      state.token = -1;
+    },
   },
   actions: {
     login: ({ commit }, userInfos) => {
@@ -84,7 +88,11 @@ const store = createStore({
           });
       });
     },
+    disconnect: ({ commit }) => {
+      commit('DISCONNECT');
+      router.push('/login');
+      localStorage.removeItem('token');
+    },
   }
 })
-
 export default store;
