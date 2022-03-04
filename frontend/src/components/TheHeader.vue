@@ -1,16 +1,16 @@
 <template>
-  <div class="min-w-full bg-white flex justify-between items-center">
+  <div class="min-w-full bg-white flex justify-between items-center shadow-md">
     <router-link to="/">
       <img src="../assets/logo.png" class="object-fit max-w-sm" alt="" />
     </router-link>
 
-    <div class="mr-6">
+    <div class="flex items-center mr-6">
       <Menu as="div" class="relative inline-block text-left">
         <div>
           <MenuButton
-            class="flex items-center shadow-md hover:shadow-2xl w-16 aspect-square rounded-full"
+            class="flex items-center border shadow-md hover:border-2 hover:border-white w-16 rounded-full"
           >
-            <img :src="avatar" alt="" class="object-cover rounded-full" />
+            <img :src="avatar" alt="" class="rounded-full aspect-square" />
           </MenuButton>
         </div>
 

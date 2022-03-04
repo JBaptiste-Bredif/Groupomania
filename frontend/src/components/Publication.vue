@@ -3,7 +3,12 @@
     class="flex w-full flex-col mx-auto justify-around p-5 bg-white rounded-xl gap-4"
   >
     <div class="flex items-center w-full space-x-2">
-      <img class="rounded-full icon" :src="avatar" width="40" height="40" />
+      <img
+        class="rounded-full icon aspect-square"
+        :src="avatar"
+        width="40"
+        height="40"
+      />
       <div>
         <p class="font-medium">{{ pseudo }}</p>
         <p class="text-xs">{{ timestamp }}</p>

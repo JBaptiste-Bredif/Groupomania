@@ -37,7 +37,7 @@ html {
   scroll-behavior: smooth;
   margin: 0;
   padding: 0;
-  background-color: #ffd7d7;
+  background-color: #eeeeee;
 }
 /* #app {
   max-width: 90%;
