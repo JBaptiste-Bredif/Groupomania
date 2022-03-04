@@ -5,7 +5,7 @@
         class="w-full p-2 rounded bg-white rounded-2xl text-left text-neutral-400"
         @click="togglePublicationModal()"
       >
-        <span class="sm:ml-4"> Une envie de partager ? </span>
+        <span class="sm:ml-4">Une envie de partager ?</span>
       </button>
       <!-- <input type="text" placeholder="" /> -->
     </div>
@@ -20,18 +20,15 @@
         :updatedAt="publication.updatedAt"
         :userId="publication.userId"
         :arrayUsersLike="publication.Likes"
-        @deletePublication="deletePublication"
+        @deletePublication="(publicationId) => deletePublication(publicationId)"
       />
-      <!-- @deletePublication="(val) => deletePublication" NE FONCTIONNE PAS -->
-      <!-- @deletePublication emit par Publication(component) -->
     </div>
     <Modal
       :showModal="showPublicationModal"
       :waiting="waitingPublishing"
       @closePublicationModal="togglePublicationModal()"
-      @publish="publish($event)"
+      @publish="(publication) => publish(publication)"
     />
-    <!-- !mentorat pourquoi avoir besoins du $event si on veut mettre les () pour désigner la fonction -->
   </div>
 </template>
 
@@ -85,7 +82,6 @@ export default {
     publish: function (data) {
       const self = this;
       const isFormData = true;
-
       this.waitingPublishing = true;
 
       let body = {

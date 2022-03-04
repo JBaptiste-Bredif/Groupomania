@@ -63,9 +63,8 @@
             :createdAt="comment.createdAt"
             :updatedAt="comment.updatedAt"
             :userId="comment.userId"
-            @deleteComment="deleteComment"
+            @deleteComment="(commentId) => deleteComment(commentId)"
           />
-          <!-- @deleteComment="deleteComment" -->
         </div>
       </div>
       <p v-else class="mt-2 font-medium">
@@ -204,7 +203,7 @@ export default {
     },
     likeOrNot: function () {
       const self = this;
-      console.log(self.listUsers); // ! mentorat pourquoi ma list est dégeux
+      console.log(self.listUsers);
       API.post("/like/" + this.id).then((response) => {
         if (!response.error) {
           if (response.like) {
