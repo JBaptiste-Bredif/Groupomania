@@ -42,7 +42,7 @@
           {{ countLikes }}
         </span>
         <button @click="likeOrNot()" class="text-xl">
-          <i v-if="isLiked" class="fas fa-heart text-green-700"></i>
+          <i v-if="isLiked" class="fas fa-heart text-red-700"></i>
           <i v-else class="far fa-heart"></i>
         </button>
       </div>
