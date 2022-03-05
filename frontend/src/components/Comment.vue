@@ -4,7 +4,12 @@
   >
     <div class="grow">
       <div class="flex items-center w-full space-x-2">
-        <img class="rounded-full icon" :src="avatar" width="30" height="30" />
+        <img
+          class="rounded-full icon aspect-square"
+          :src="avatar"
+          width="30"
+          height="30"
+        />
         <div class="flex items-center w-full space-x-2">
           <p class="font-medium">{{ pseudo }}</p>
           <p class="text-xs">{{ timestamp }}</p>

@@ -52,18 +52,11 @@ export default {
   },
   async mounted() {
     const self = this;
-    await API.get("/publication")
-      .then(function (response) {
-        console.log("🚀 ~ file: Home.vue ~ line 34 ~ (response", response);
-        if (!response.error) {
-          self.publications = response.publications;
-        } else {
-          console.log("🚀 ~ file: Home.vue ~ line 29 ~ response", response);
-        }
-      })
-      .catch(function (error) {
-        console.log("🚀 ~ file: Home.vue ~ line 39 ~ mounted ~ error", error);
-      });
+    await API.get("/publication").then(function (response) {
+      if (!response.error) {
+        self.publications = response.publications;
+      }
+    });
   },
   methods: {
     deletePublication: function (publicationId) {

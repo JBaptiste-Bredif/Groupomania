@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken')
 const db = require('../models/index.js')
 const fs = require('fs')
 const cloudinary = require('cloudinary').v2
+const validator = require('validator')
+
 // direction.ENV
 cloudinary.config({
   cloud_name: `${process.env.CLOUD_NAME}`,
@@ -12,10 +14,16 @@ cloudinary.config({
 
 // POST : '/api/auth/signup'
 exports.signup = (req, res, next) => {
+  if (!validator.isEmail(req.body.email)) {
+    return res.status(403).json({ error: "Ce mail ne respecte pas une forme valide !" })
+  }
+  if (!validator.isLength(req.body.password, { min: 8 })) {
+    return res.status(403).json({ error: "Le mot de passe doit faire au minimum 8 caractères !" })
+  }
   db.User.findOne({ where: { email: req.body.email } })
     .then(user => {
       if (user) {
-        return res.status(409).json({ error: "Cette email est déjà utilisé" })
+        return res.status(409).json({ error: "Ce mail est déjà utilisé !" })
       }
       bcrypt.hash(req.body.password, 10)
         .then(hash => {
@@ -38,7 +46,7 @@ exports.login = (req, res, next) => {
   db.User.findOne({ where: { email: req.body.email } })
     .then(user => {
       if (!user) {
-        return res.status(404).json({ error: 'Utilisateur non trouvé !' })
+        return res.status(404).json({ error: "Il n'y aucun utilisateur avec ce mail !" })
       }
       bcrypt.compare(req.body.password, user.password)
         .then(valid => {
@@ -122,11 +130,15 @@ exports.updateAccount = (req, res, next) => {
   }
   const previous_photoId = req.user.photoId
 
+  if (!validator.isEmail(data.email)) {
+    return res.status(403).json({ error: "Ce mail ne respecte pas une forme valide !" })
+  }
+
   if (user.email !== data.email) {
     db.User.findOne({ where: { email: data.email } })
       .then(result => {
         if (result) {
-          return res.status(409).json({ error: "Cette email est déjà utilisé !" })
+          return res.status(409).json({ error: "Ce mail est déjà utilisé !" })
         }
       })
       .catch(error => {
@@ -185,6 +197,11 @@ exports.updateAccount = (req, res, next) => {
 // PUT : '/api/auth/password/:userId'
 exports.updatePassword = (req, res, next) => {
   const user = req.user
+
+  if (!validator.isLength(req.body.newPassword, { min: 8 })) {
+    return res.status(403).json({ error: "Le mot de passe doit faire au minimum 8 caractères !" })
+  }
+
   bcrypt.compare(req.body.oldPassword, user.password)
     .then(valid => {
       if (!valid) {

@@ -41,12 +41,12 @@ const store = createStore({
               commit('LOG_USER', response);
               resolve(response);
             } else {
-              commit('SET_STATUS', 'error_login');
+              commit('SET_STATUS', response.error);
               reject(response);
             }
           })
           .catch(function (error) {
-            commit('SET_STATUS', 'error_login');
+            commit('SET_STATUS', error.error);
             reject(error);
           });
       });
@@ -60,17 +60,18 @@ const store = createStore({
               commit('LOG_USER', response);
               resolve(response);
             } else {
-              commit('SET_STATUS', 'error_login');
+              commit('SET_STATUS', response.error);
               reject(response);
             }
           })
           .catch(function (error) {
-            commit('SET_STATUS', 'error_login');
+            commit('SET_STATUS', error.error);
             reject(error);
           });
       });
     },
     createAccount: ({ commit }, userInfos) => {
+      commit('SET_STATUS', 'loading');
       return new Promise((resolve, reject) => {
         API.post('/auth/signup', userInfos)
           .then(function (response) {
@@ -78,12 +79,12 @@ const store = createStore({
               commit('SET_STATUS', 'created');
               resolve(response);
             } else {
-              commit('SET_STATUS', 'error_create');
+              commit('SET_STATUS', response.error);
               reject(response);
             }
           })
           .catch(function (error) {
-            commit('SET_STATUS', 'error_create');
+            commit('SET_STATUS', error.error);
             reject(error);
           });
       });

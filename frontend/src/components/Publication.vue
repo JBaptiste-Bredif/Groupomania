@@ -203,7 +203,6 @@ export default {
     },
     likeOrNot: function () {
       const self = this;
-      console.log(self.listUsers);
       API.post("/like/" + this.id).then((response) => {
         if (!response.error) {
           if (response.like) {

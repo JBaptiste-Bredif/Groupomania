@@ -53,7 +53,6 @@ class API_CONSTRUCTOR {
 
   async handleResponse(response) {
     if (response.status == 401) {
-      console.log(response)
       localStorage.removeItem('token')
       router.push('/login')
     }

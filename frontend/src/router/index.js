@@ -3,6 +3,7 @@ import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import Profil from '@/views/Profil.vue';
 import NotFound from '@/views/NotFound.vue';
+import store from '@/store/index';
 
 const routes = [
   {
@@ -44,15 +45,25 @@ const router = new createRouter({
   routes,
 });
 
-// router.beforeEach((to, from) => {
-//   console.log("🚀 ~ file: index.js ~ line 48 ~ router.beforeEach ~ to, from", to, from)
-//   // Retourne sur login si local storage clean
-//   // explicitly return false to cancel the navigation 
-//   return false
-// })
+router.beforeEach(async (to, from) => {
+  from;
+  // verify user was authenticated and have his token
+  if (store.state.token == -1 && localStorage.getItem('token')) {
+    // reload account info after page reload
+    await store.dispatch('relog');
+  } else if (
+    // make sure the user is authenticated
+    !localStorage.getItem('token') &&
+    // ❗️ Avoid an infinite redirect
+    to.name !== 'Login'
+  ) {
+    return { name: 'Login' }
+    // redirect the user to the login page
+  }
+})
 
 router.afterEach((to, from) => {
-  console.log(to, from);
+  from;
   document.title = to.meta.title;
 });
 
