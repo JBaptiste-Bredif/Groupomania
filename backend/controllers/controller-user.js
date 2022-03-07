@@ -119,23 +119,14 @@ exports.getAllUsers = (req, res, next) => {
     })
 }
 
-// PUT : '/api/auth/account/:userId'
+// PUT : '/api/auth/account/'
 exports.updateAccount = (req, res, next) => {
   const user = req.user
-  let data = []
-  try {
-    data = JSON.parse(req.body.data)
-  } catch (error) {
-    return res.status(500).json({ error: error.message })
-  }
-  const previous_photoId = req.user.photoId
-
-  if (!validator.isEmail(data.email)) {
+  if (!validator.isEmail(req.body.email)) {
     return res.status(403).json({ error: "Ce mail ne respecte pas une forme valide !" })
   }
-
-  if (user.email !== data.email) {
-    db.User.findOne({ where: { email: data.email } })
+  if (user.email !== req.body.email) {
+    db.User.findOne({ where: { email: req.body.email } })
       .then(result => {
         if (result) {
           return res.status(409).json({ error: "Ce mail est déjà utilisé !" })
@@ -145,53 +136,58 @@ exports.updateAccount = (req, res, next) => {
         return res.status(500).json({ error: error.message })
       })
   }
-  // const filename = user.photo.split('/images/')[1]
-  if (req.file) {
-    const base_url_photo = `./images/${req.file.filename}`
-    // File upload (example for promise api)
-
-    cloudinary.uploader.upload(base_url_photo, { tags: 'avatar', folder: 'icon' }, function (error, image) {
-      if (error) {
-        fs.unlink(base_url_photo, () => {
-          return res.status(500).json({ error: error.message })
-        })
+  user.update({ pseudo: req.body.pseudo, email: req.body.email })
+    .then(() => res.status(200).json({
+      message: 'Informations mises à jours !',
+      user: {
+        pseudo: user.pseudo,
+        email: user.email
       }
-      // url = image.url 
-      // id = image.public_id
-      user.update({ pseudo: data.pseudo, email: data.email, photoUrl: image.url, photoId: image.public_id })
-        .then(user => {
-          cloudinary.uploader.destroy(previous_photoId, { tags: 'avatar', folder: 'icon' }, function (error) {
-            if (error) {
-              return res.status(500).json({ error: error.message })
-            }
-            fs.unlink(base_url_photo, () => {
-              res.status(201).json({
-                message: 'Informations mises à jours !',
-                user: {
-                  pseudo: user.pseudo,
-                  email: user.email,
-                  photoUrl: user.photoUrl,
-                  photoId: user.photoId
-                }
-              })
+    }))
+    .catch(error => { return res.status(500).json({ error: error.message }) })
+}
+
+// PUT : '/api/auth/avatar/'
+exports.updateAvatar = (req, res, next) => {
+  const user = req.user
+
+  const previous_photoId = req.user.photoId
+
+  // const filename = user.photo.split('/images/')[1]
+  if (!req.file) {
+    return res.status(400).json({ error: "Aucune image n'a été envoyé !" })
+  }
+
+  const base_url_photo = `./images/${req.file.filename}`
+  // File upload (example for promise api)
+
+  cloudinary.uploader.upload(base_url_photo, { tags: 'avatar', folder: 'icon' }, function (error, image) {
+    if (error) {
+      fs.unlink(base_url_photo, () => {
+        return res.status(500).json({ error: error.message })
+      })
+    }
+    // url = image.url 
+    // id = image.public_id
+    user.update({ photoUrl: image.url, photoId: image.public_id })
+      .then(user => {
+        cloudinary.uploader.destroy(previous_photoId, { tags: 'avatar', folder: 'icon' }, function (error) {
+          if (error) {
+            return res.status(500).json({ error: error.message })
+          }
+          fs.unlink(base_url_photo, () => {
+            res.status(201).json({
+              message: 'Informations mises à jours !',
+              user: {
+                photoUrl: user.photoUrl,
+                photoId: user.photoId
+              }
             })
           })
         })
-        .catch(error => { return res.status(500).json({ error: error.message }) })
-    })
-  } else {
-    user.update({ pseudo: data.pseudo, email: data.email })
-      .then(() => res.status(200).json({
-        message: 'Informations mises à jours !',
-        user: {
-          pseudo: user.pseudo,
-          email: user.email,
-          photoUrl: user.photoUrl,
-          photoId: user.photoId
-        }
-      }))
+      })
       .catch(error => { return res.status(500).json({ error: error.message }) })
-  }
+  })
 }
 
 // PUT : '/api/auth/password/:userId'
