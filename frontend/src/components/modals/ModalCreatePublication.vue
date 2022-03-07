@@ -27,8 +27,9 @@
         <span
           class="hidden sm:inline-block sm:align-middle sm:h-screen"
           aria-hidden="true"
-          >&#8203;</span
         >
+          &#8203;
+        </span>
         <TransitionChild
           as="template"
           enter="ease-out duration-300"
@@ -64,10 +65,7 @@
                   <div class="my-3">
                     <input
                       type="file"
-                      name=""
-                      id=""
                       accept="image/png, image/jpeg, image/jpg, image/gif"
-                      class=""
                       @change="onFileChange"
                     />
                   </div>
@@ -80,20 +78,12 @@
             <div
               class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
             >
-              <button
+              <button-save
                 :disabled="description == '' || waiting"
-                type="button"
-                class="w-full disabled:opacity-75 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-500 text-base font-medium text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                :waiting="waiting"
+                :message="'Publier'"
                 @click="emitPublishEvent()"
-              >
-                <span v-if="!waiting"> Publier </span>
-                <span v-else class="inline-flex items-center">
-                  En cours
-                  <i
-                    class="fas fa-spinner inline ml-3 w-4 h-4 text-white animate-spin"
-                  ></i>
-                </span>
-              </button>
+              />
               <button
                 v-if="!waiting"
                 type="button"
@@ -111,6 +101,7 @@
 </template>
 
 <script>
+import buttonSave from "@/components/ButtonSave.vue";
 import {
   Dialog,
   DialogOverlay,
@@ -134,6 +125,7 @@ export default {
     DialogTitle,
     TransitionChild,
     TransitionRoot,
+    buttonSave,
   },
   props: {
     showModal: {
