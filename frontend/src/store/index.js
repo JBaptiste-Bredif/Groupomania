@@ -29,6 +29,10 @@ const store = createStore({
     DISCONNECT: function (state) {
       state.token = -1;
     },
+    SET_AVATAR: function (state, photoUrl, photoId) {
+      state.user.photoUrl = photoUrl;
+      state.user.photoId = photoId;
+    }
   },
   actions: {
     login: ({ commit }, userInfos) => {
@@ -94,6 +98,9 @@ const store = createStore({
       router.push('/login');
       localStorage.removeItem('token');
     },
+    changeAvatar: ({ commit }, data) => {
+      commit('SET_AVATAR', data.photoUrl, data.photoId);
+    }
   }
 })
 export default store;
