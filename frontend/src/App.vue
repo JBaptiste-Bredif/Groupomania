@@ -43,5 +43,6 @@ img {
   max-height: 25rem;
   border-radius: 8px;
   display: block;
+  object-fit: cover;
 }
 </style>

@@ -29,7 +29,7 @@
               <MenuItem v-slot="{ active }">
                 <router-link
                   :class="[
-                    active ? 'bg-orange-500 text-white' : 'text-gray-900',
+                    active ? 'bg-orange-600 text-white' : 'text-gray-900',
                     'group flex rounded-md items-center w-full gap-4 px-2 py-2 text-md',
                   ]"
                   to="/profil"
@@ -41,7 +41,7 @@
               <MenuItem v-slot="{ active }">
                 <button
                   :class="[
-                    active ? 'bg-orange-500 text-white' : 'text-gray-900',
+                    active ? 'bg-orange-600 text-white' : 'text-gray-900',
                     'group flex rounded-md items-center gap-4 w-full px-2 py-2 text-md',
                   ]"
                   @click="disconnect()"

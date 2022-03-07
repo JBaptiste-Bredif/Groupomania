@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-10 max-w-2xl mx-auto">
+  <div class="flex flex-col gap-10 max-w-2xl w-full mx-auto">
     <div class="form-row">
       <button
         class="w-full p-2 rounded bg-white rounded-2xl text-left text-neutral-400"
