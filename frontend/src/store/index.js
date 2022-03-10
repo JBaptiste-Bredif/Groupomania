@@ -32,6 +32,10 @@ const store = createStore({
     SET_AVATAR: function (state, photoUrl, photoId) {
       state.user.photoUrl = photoUrl;
       state.user.photoId = photoId;
+    },
+    SET_NEW_USER_INFO: function (state, email, pseudo) {
+      state.user.email = email;
+      state.user.pseudo = pseudo;
     }
   },
   actions: {
@@ -64,12 +68,10 @@ const store = createStore({
               commit('LOG_USER', response);
               resolve(response);
             } else {
-              commit('SET_STATUS', response.error);
               reject(response);
             }
           })
           .catch(function (error) {
-            commit('SET_STATUS', error.error);
             reject(error);
           });
       });
@@ -100,6 +102,9 @@ const store = createStore({
     },
     changeAvatar: ({ commit }, data) => {
       commit('SET_AVATAR', data.photoUrl, data.photoId);
+    },
+    changeInfos: ({ commit }, data) => {
+      commit('SET_NEW_USER_INFO', data.email, data.pseudo);
     }
   }
 })

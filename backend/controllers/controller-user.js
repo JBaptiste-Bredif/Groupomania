@@ -201,14 +201,13 @@ exports.updatePassword = (req, res, next) => {
   bcrypt.compare(req.body.oldPassword, user.password)
     .then(valid => {
       if (!valid) {
-        return res.status(401).json({ error: "Mot de passe incorrect ! " })
+        return res.status(403).json({ error: "Mot de passe incorrect ! " })
       }
       bcrypt.hash(req.body.newPassword, 10)
         .then(hash => {
           user.update({ password: hash })
             .then(() => res.status(201).json({
-              message: 'Informations mises à jours !',
-              newPassword: req.body.newPassword
+              message: 'Informations mises à jours !'
             }))
             .catch(error => { return res.status(500).json({ error: error.message }) })
         })

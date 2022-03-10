@@ -1,7 +1,10 @@
 <template>
   <main>
     <Header v-if="isAuthenticated" />
-    <div id="view-container" class="mx-auto min-h-screen min-w-screen">
+    <div
+      id="view-container"
+      class="mx-auto min-h-screen min-w-screen p-4 sm:px-16 flex justify-center items-center"
+    >
       <router-view />
     </div>
   </main>
@@ -32,17 +35,34 @@ html {
   padding: 0;
   background-color: #eeeeee;
 }
-#view-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32px;
-}
 img {
   max-width: 100%;
   max-height: 25rem;
   border-radius: 8px;
   display: block;
   object-fit: cover;
+}
+
+.form-row {
+  display: flex;
+  margin: 16px 0px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.form-row__input {
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  background: #f2f2f2;
+  font-weight: 500;
+  font-size: 16px;
+  flex: 1;
+  min-width: 100px;
+  color: black;
+}
+
+.form-row__input::placeholder {
+  color: #aaaaaa;
 }
 </style>
