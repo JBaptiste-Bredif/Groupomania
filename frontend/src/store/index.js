@@ -54,7 +54,6 @@ const store = createStore({
             }
           })
           .catch(function (error) {
-            commit('SET_STATUS', error.error);
             reject(error);
           });
       });
@@ -90,7 +89,6 @@ const store = createStore({
             }
           })
           .catch(function (error) {
-            commit('SET_STATUS', error.error);
             reject(error);
           });
       });
