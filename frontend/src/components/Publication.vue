@@ -8,6 +8,7 @@
         :src="avatar"
         width="40"
         height="40"
+        alt="Avatar"
       />
       <div>
         <p class="font-medium">{{ pseudo }}</p>
@@ -26,7 +27,7 @@
     <div class="">
       {{ description }}
     </div>
-    <img v-if="image" class="mx-auto" :src="image" />
+    <img v-if="image" class="mx-auto" :src="image" alt="Image du poste" />
     <div class="flex justify-between">
       <p
         v-if="!showComments"
@@ -46,7 +47,7 @@
         <span>
           {{ countLikes }}
         </span>
-        <button @click="likeOrNot()" class="text-xl">
+        <button aria-label="like" @click="likeOrNot()" class="text-xl">
           <i v-if="isLiked" class="fas fa-heart text-red-700"></i>
           <i v-else class="far fa-heart"></i>
         </button>
@@ -79,6 +80,7 @@
         class="grow rounded-l-2xl p-2"
       />
       <button
+        aria-label="comment"
         class="content-center rounded-r-2xl w-10 aspect-square hover:scale-150"
         @click="addComment()"
       >

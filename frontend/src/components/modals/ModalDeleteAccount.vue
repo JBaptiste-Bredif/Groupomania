@@ -43,23 +43,27 @@
             class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
           >
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-              <div class="sm:flex sm:items-start">
-                <div
-                  class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
-                ></div>
+              <div class="w-full">
                 <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                   <DialogTitle
                     as="h3"
                     class="text-lg leading-6 font-medium text-gray-900"
                   >
-                    Desactivate account
+                    Supprimer votre compte
                   </DialogTitle>
                   <div class="mt-2">
                     <p class="text-sm text-gray-500">
-                      Are you sure you want to deactivate your account? All of
-                      your data will be permanently removed. This action cannot
-                      be undone.
+                      Pour supprimer votre compte renseigné votre mot de passe
                     </p>
+                    <input
+                      v-model="password"
+                      type="password"
+                      placeholder="Mot de passe "
+                      class="form-row__input w-full mt-4"
+                    />
+                  </div>
+                  <div v-if="messageDelete" class="font-medium mt-4">
+                    {{ messageDelete }}
                   </div>
                 </div>
               </div>
@@ -68,11 +72,12 @@
               class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
             >
               <button
+                :disabled="password.length == ''"
                 type="button"
-                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                @click="emitCloseEvent()"
+                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm disabled:cursor-not-allowed disabled:opacity-60"
+                @click="deleteAccount()"
               >
-                Desactivate
+                Supprimer
               </button>
               <button
                 type="button"
@@ -80,7 +85,7 @@
                 @click="emitCloseEvent()"
                 ref="cancelButtonRef"
               >
-                Cancel
+                Annuler
               </button>
             </div>
           </div>
@@ -91,6 +96,7 @@
 </template>
 
 <script>
+import { API } from "@/services/API.js";
 import {
   Dialog,
   DialogOverlay,
@@ -100,6 +106,13 @@ import {
 } from "@headlessui/vue";
 
 export default {
+  data() {
+    return {
+      waiting: false,
+      password: "",
+      messageDelete: "",
+    };
+  },
   components: {
     Dialog,
     DialogOverlay,
@@ -115,7 +128,24 @@ export default {
   },
   methods: {
     emitCloseEvent: function () {
-      this.$emit("closePublicationModal");
+      if (!this.waiting) {
+        this.$emit("closeDeleteModal");
+      }
+    },
+    deleteAccount: function () {
+      const self = this;
+      this.waiting = true;
+      const body = {
+        password: this.password,
+      };
+      API.delete("/auth", body).then((response) => {
+        if (!response.error) {
+          self.$store.dispatch("disconnect");
+        } else {
+          self.messageDelete = response.error;
+        }
+        this.waiting = false;
+      });
     },
   },
 };

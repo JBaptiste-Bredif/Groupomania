@@ -32,9 +32,10 @@ class API_CONSTRUCTOR {
       .catch(() => alert(internError))
   }
 
-  delete(path) {
+  delete(path, body) {
     return fetch(this.baseUrl + path, {
       method: 'DELETE',
+      body: JSON.stringify(body),
       headers: this.headers()
     })
       .then(response => this.handleResponse(response))

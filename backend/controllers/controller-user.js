@@ -99,7 +99,7 @@ exports.delete = (req, res, next) => {
   bcrypt.compare(req.body.password, user.password)
     .then(valide => {
       if (!valide) {
-        return res.status(401).json({ error: "Mot de passe incorrect ! " })
+        return res.status(403).json({ error: "Mot de passe incorrect ! " })
       }
       user.destroy()
         .then(() => res.status(200).json({ message: 'Compte supprimé !' }))

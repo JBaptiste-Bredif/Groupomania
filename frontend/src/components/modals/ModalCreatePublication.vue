@@ -44,39 +44,58 @@
           >
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div class="">
-                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                <div class="mt-3 text-center sm:mt-0 sm:text-left">
                   <DialogTitle
                     as="h3"
                     class="text-lg leading-6 font-medium text-gray-900"
                   >
                     Créer une publication
                   </DialogTitle>
-                  <div class="mt-2">
+                  <div class="my-3">
                     <input
                       v-model="description"
                       type="text"
                       name=""
                       id=""
-                      class="grow rounded-2xl min-w-full p-2"
+                      class="grow rounded-2xl min-w-full p-2 border-2"
                       placeholder="Que voulez-vous dire ?"
                       autofocus
                     />
                   </div>
+
                   <div class="my-3">
                     <input
+                      id="imgSelector"
                       type="file"
+                      class="hidden"
                       accept="image/png, image/jpeg, image/jpg, image/gif"
                       @change="onFileChange"
                     />
                   </div>
                   <div class="flex justify-center items-center">
-                    <img v-if="url" :src="url" />
+                    <img v-if="url" :src="url" alt="Prévisualisation image" />
+                  </div>
+                  <div class="mx-auto flex justify-center my-2">
+                    <button
+                      v-if="!file"
+                      class="bg-gray-300 px-8 py-2 rounded-full font-medium"
+                      @click="openFileSelector()"
+                    >
+                      Ajouter une image
+                    </button>
+                    <button
+                      v-else
+                      class="bg-red-500 px-8 py-2 rounded-full font-medium text-white"
+                      @click="deleteFileFromSelector()"
+                    >
+                      Supprimer l'image
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
             <div
-              class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
+              class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-4"
             >
               <button-save
                 :disabled="description == '' || waiting"
@@ -149,6 +168,14 @@ export default {
     },
   },
   methods: {
+    openFileSelector: function () {
+      document.getElementById("imgSelector").click();
+    },
+    deleteFileFromSelector: function () {
+      this.file = "";
+      this.url = "";
+      document.getElementById("imgSelector").target.files[0] = "";
+    },
     onFileChange(e) {
       this.file = e.target.files[0];
       this.url = URL.createObjectURL(this.file);

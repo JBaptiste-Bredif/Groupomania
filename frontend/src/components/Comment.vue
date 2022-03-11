@@ -9,6 +9,7 @@
           :src="avatar"
           width="30"
           height="30"
+          alt="Avatar"
         />
         <div class="flex items-center w-full space-x-2">
           <p class="font-medium">{{ pseudo }}</p>

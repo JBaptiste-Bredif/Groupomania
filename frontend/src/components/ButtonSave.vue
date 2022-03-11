@@ -2,7 +2,7 @@
   <button
     :disabled="waiting || disabled"
     type="button"
-    class="w-full disabled:opacity-75 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-600 text-base font-medium text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm disabled:cursor-not-allowed"
+    class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-600 text-lg font-medium text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-base disabled:cursor-not-allowed disabled:opacity-60"
     @click="emitClickEvent()"
   >
     <span v-if="!waiting">{{ message }}</span>

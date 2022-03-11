@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
     db.User.findOne({ where: { id: userId } })
       .then(user => {
         if (!user) {
-          return res.status(404).json({ error: 'Utilisateur introuvable !' })
+          return res.status(401).json({ error: 'Utilisateur introuvable !' })
         }
         req.user = user
         next()

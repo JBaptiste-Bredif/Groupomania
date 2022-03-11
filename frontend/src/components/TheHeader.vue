@@ -1,16 +1,20 @@
 <template>
   <div class="min-w-full bg-white flex justify-between items-center shadow-md">
-    <router-link to="/">
-      <img src="../assets/logo.png" class="object-fit max-w-sm" alt="" />
+    <router-link to="/" class="max-w-lg">
+      <img src="../assets/logo.png" alt="Logo groupomania" />
     </router-link>
 
-    <div class="flex items-center mr-6">
+    <div class="flex items-center m-4">
       <Menu as="div" class="relative inline-block text-left">
         <div>
           <MenuButton
             class="flex items-center border shadow-md hover:border-2 hover:border-white w-16 rounded-full"
           >
-            <img :src="avatar" alt="" class="rounded-full aspect-square" />
+            <img
+              :src="avatar"
+              alt="Avatar"
+              class="rounded-full aspect-square"
+            />
           </MenuButton>
         </div>
 
