@@ -59,7 +59,6 @@
                       id=""
                       class="grow rounded-2xl min-w-full p-2 border-2"
                       placeholder="Que voulez-vous dire ?"
-                      autofocus
                     />
                   </div>
 

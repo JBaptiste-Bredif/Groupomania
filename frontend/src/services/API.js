@@ -2,7 +2,7 @@ import router from '@/router/index'
 const internError = "Pas de réponse du serveur !"
 class API_CONSTRUCTOR {
   constructor() {
-    this.baseUrl = process.env.VUE_APP_API_BASE_URL || "http://localhost:3000/api"
+    this.baseUrl = process.env.VUE_APP_API_BASE_URL
   }
 
   headers(options = {}) {

@@ -17,9 +17,15 @@ exports.signup = (req, res, next) => {
   if (!validator.isEmail(req.body.email)) {
     return res.status(403).json({ error: "Ce mail ne respecte pas une forme valide !" })
   }
+
   if (!validator.isLength(req.body.password, { min: 8 })) {
     return res.status(403).json({ error: "Le mot de passe doit faire au minimum 8 caractères !" })
   }
+
+  if (!validator.isStrongPassword(req.body.password)) {
+    return res.status(403).json({ error: "Le mot de passe n'est pas sécurisé !" })
+  }
+
   db.User.findOne({ where: { email: req.body.email } })
     .then(user => {
       if (user) {
@@ -46,12 +52,12 @@ exports.login = (req, res, next) => {
   db.User.findOne({ where: { email: req.body.email } })
     .then(user => {
       if (!user) {
-        return res.status(404).json({ error: "Il n'y aucun utilisateur avec ce mail !" })
+        return res.status(404).json({ error: "Utilisateur inexistent ou mot de passe incorrect !" })
       }
       bcrypt.compare(req.body.password, user.password)
         .then(valid => {
           if (!valid) {
-            return res.status(401).json({ error: 'Mot de passe incorrect !' })
+            return res.status(401).json({ error: 'Utilisateur inexistent ou mot de passe incorrect !' })
           }
           res.status(200).json({
             message: "Vous êtes connecté ! ",
@@ -138,7 +144,7 @@ exports.updateAccount = (req, res, next) => {
   }
   user.update({ pseudo: req.body.pseudo, email: req.body.email })
     .then(() => res.status(200).json({
-      message: 'Informations mises à jours !',
+      message: 'Informations mises à jour !',
       user: {
         pseudo: user.pseudo,
         email: user.email
@@ -177,7 +183,7 @@ exports.updateAvatar = (req, res, next) => {
           }
           fs.unlink(base_url_photo, () => {
             res.status(201).json({
-              message: 'Informations mises à jours !',
+              message: 'Informations mises à jour !',
               user: {
                 photoUrl: user.photoUrl,
                 photoId: user.photoId
@@ -198,6 +204,10 @@ exports.updatePassword = (req, res, next) => {
     return res.status(403).json({ error: "Le mot de passe doit faire au minimum 8 caractères !" })
   }
 
+  if (!validator.isStrongPassword(req.body.newPassword)) {
+    return res.status(403).json({ error: "Le mot de passe n'est pas sécurisé !" })
+  }
+
   bcrypt.compare(req.body.oldPassword, user.password)
     .then(valid => {
       if (!valid) {
@@ -207,7 +217,7 @@ exports.updatePassword = (req, res, next) => {
         .then(hash => {
           user.update({ password: hash })
             .then(() => res.status(201).json({
-              message: 'Informations mises à jours !'
+              message: 'Informations mises à jour !'
             }))
             .catch(error => { return res.status(500).json({ error: error.message }) })
         })

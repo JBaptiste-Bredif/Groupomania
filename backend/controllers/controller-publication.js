@@ -114,7 +114,7 @@ exports.updatePublication = (req, res, next) => {
         return res.status(401).json({ error: ' Unauthorized !' })
       }
       publication.update({ description: req.body.description })
-        .then(() => res.status(200).json({ message: 'Publication mis à jours !' }))
+        .then(() => res.status(200).json({ message: 'Publication mis à jour !' }))
         .catch(error => { return res.status(500).json({ error: error.message }) })
     })
     .catch(error => { return res.status(500).json({ error: error.message }) });

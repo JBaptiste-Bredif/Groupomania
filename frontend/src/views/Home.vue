@@ -7,7 +7,6 @@
       >
         <span class="sm:ml-4">Une envie de partager ?</span>
       </button>
-      <!-- <input type="text" placeholder="" /> -->
     </div>
     <div v-for="publication in publications" v-bind:key="publication.id">
       <Publication

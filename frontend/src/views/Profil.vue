@@ -66,26 +66,31 @@
             <i class="fas fa-key mr-2"></i>
             Changement mot de passe
           </h2>
-          <div class="flex flex-col">
-            <label for="oldPassword">Ancien mot de passe :</label>
-            <input
-              v-model="oldPassword"
-              type="password"
-              name="oldPassword"
-              class="form-row__input"
-              placeholder="Ancien mot de passe"
-            />
-          </div>
-          <div class="flex flex-col">
-            <label for="newPassword">Nouveau mot de passe :</label>
-            <input
-              v-model="newPassword"
-              type="password"
-              name="newPassword"
-              class="form-row__input"
-              placeholder="Nouveau mot de passe"
-            />
-          </div>
+          <form action="void" class="flex flex-col gap-6">
+            <input hidden type="text" autocomplete="username" value="{{...}}" />
+            <div class="flex flex-col">
+              <label for="oldPassword">Ancien mot de passe :</label>
+              <input
+                v-model="oldPassword"
+                type="password"
+                name="oldPassword"
+                class="form-row__input"
+                autocomplete="password"
+                placeholder="Ancien mot de passe"
+              />
+            </div>
+            <div class="flex flex-col">
+              <label for="newPassword">Nouveau mot de passe :</label>
+              <input
+                v-model="newPassword"
+                type="password"
+                name="newPassword"
+                class="form-row__input"
+                autocomplete="new-password"
+                placeholder="Nouveau mot de passe"
+              />
+            </div>
+          </form>
           <div class="flex flex-col items-center gap-2">
             <div v-if="messageUpdatePassword">{{ messageUpdatePassword }}</div>
             <button-save

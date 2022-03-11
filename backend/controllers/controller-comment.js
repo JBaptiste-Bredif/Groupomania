@@ -70,7 +70,7 @@ exports.updateComment = (req, res, next) => {
         return res.status(401).json({ error: ' Unauthorized !' })
       }
       comment.update({ message: req.body.message })
-        .then(() => res.status(200).json({ message: 'Commentaire mis à jours !' }))
+        .then(() => res.status(200).json({ message: 'Commentaire mis à jour !' }))
         .catch(error => { return res.status(500).json({ error: error.message }) })
     })
     .catch(error => { return res.status(500).json({ error: error.message }) })
