@@ -25,12 +25,11 @@ module.exports = {
       photoUrl: {
         type: Sequelize.STRING,
         allowNull: true,
-        defaultValue: `${process.env.CLOUD_DEFAULT_ICON_URL}`
+        defaultValue: `defaultAvatar.png`
       },
       photoId: {
         type: Sequelize.STRING,
         allowNull: true,
-        defaultValue: `${process.env.CLOUD_DEFAULT_ICON_ID}`
       },
       admin: {
         type: Sequelize.BOOLEAN,

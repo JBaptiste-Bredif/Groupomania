@@ -1,16 +1,16 @@
 {
   "development": {
-    "username": "sql11477116",
-    "password": "aVCzcwNaNH",
-    "database": "sql11477116",
-    "host": "sql11.freemysqlhosting.net",
+    "username": "root",
+    "password": "",
+    "database": "groupomania",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
-    "username": "sql11477116",
-    "password": "aVCzcwNaNH",
-    "database": "sql11477116",
-    "host": "sql11.freemysqlhosting.net",
+    "username": "root",
+    "password": "",
+    "database": "groupomania",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {

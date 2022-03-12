@@ -20,12 +20,11 @@ module.exports = (sequelize, DataTypes) => {
     photoUrl: {
       type: DataTypes.STRING,
       allowNull: true,
-      default: `${process.env.CLOUD_DEFAULT_ICON_URL}`
+      default: `defaultAvatar.png`
     },
     photoId: {
       type: DataTypes.STRING,
       allowNull: true,
-      default: `${process.env.CLOUD_DEFAULT_ICON_ID}`
     },
     admin: { type: DataTypes.STRING, allowNull: false }
   }, {
