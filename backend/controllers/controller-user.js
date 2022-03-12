@@ -156,8 +156,7 @@ exports.updateAccount = (req, res, next) => {
 // PUT : '/api/auth/avatar/'
 exports.updateAvatar = (req, res, next) => {
   const user = req.user
-
-  const previous_photoId = req.user.photoId
+  const previous_photoId = req.user.photoId ? req.user.photoId : 'undefined'
 
   // const filename = user.photo.split('/images/')[1]
   if (!req.file) {
