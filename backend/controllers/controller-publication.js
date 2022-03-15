@@ -1,12 +1,6 @@
 const db = require('../models/index.js')
 const fs = require('fs')
 const cloudinary = require('cloudinary').v2
-// voir si il faut récup la photo de profil de chaque user sur les coms
-cloudinary.config({
-  cloud_name: `${process.env.CLOUD_NAME}`,
-  api_key: `${process.env.CLOUD_API_KEY}`,
-  api_secret: `${process.env.CLOUD_API_SECRET}`,
-});
 
 // GET : '/api/publication/:publicationId'
 exports.getAllPublications = (req, res, next) => {

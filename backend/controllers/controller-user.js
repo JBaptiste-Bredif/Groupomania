@@ -5,13 +5,6 @@ const fs = require('fs')
 const cloudinary = require('cloudinary').v2
 const validator = require('validator')
 
-// direction.ENV
-cloudinary.config({
-  cloud_name: `${process.env.CLOUD_NAME}`,
-  api_key: `${process.env.CLOUD_API_KEY}`,
-  api_secret: `${process.env.CLOUD_API_SECRET}`,
-});
-
 // POST : '/api/auth/signup'
 exports.signup = (req, res, next) => {
   if (!validator.isEmail(req.body.email)) {
