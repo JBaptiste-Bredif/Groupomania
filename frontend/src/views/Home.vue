@@ -1,13 +1,12 @@
 <template>
-  <div class="flex flex-col gap-10 max-w-2xl w-full mx-auto">
-    <div class="form-row">
-      <button
-        class="w-full p-2 rounded bg-white rounded-2xl text-left text-neutral-400"
-        @click="togglePublicationModal()"
-      >
-        <span class="sm:ml-4">Une envie de partager ?</span>
-      </button>
-    </div>
+  <div class="place-self-start flex flex-col gap-6 max-w-2xl w-full mx-auto">
+    <button
+      class="w-full p-2 rounded bg-white rounded-2xl text-left text-neutral-400 my-3"
+      @click="togglePublicationModal()"
+    >
+      <span class="sm:ml-4">Une envie de partager ?</span>
+    </button>
+
     <div v-for="publication in publications" v-bind:key="publication.id">
       <Publication
         :id="publication.id"

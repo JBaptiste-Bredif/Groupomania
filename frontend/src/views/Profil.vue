@@ -14,7 +14,7 @@
         <input
           id="imgSelector"
           type="file"
-          class="w-40 hidden"
+          class="hidden"
           accept="image/png, image/jpeg, image/jpg, image/gif"
           @change="onFileChange"
         />

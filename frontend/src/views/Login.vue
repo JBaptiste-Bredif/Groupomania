@@ -12,30 +12,34 @@
       Tu as déjà un compte ?
       <span class="card__action" @click="switchToLogin()">Se connecter</span>
     </p>
-    <div class="form-row">
-      <input
-        v-model="email"
-        class="form-row__input"
-        type="email"
-        placeholder="Adresse mail"
-      />
-    </div>
-    <div class="form-row" v-if="mode == 'create'">
-      <input
-        v-model="pseudo"
-        class="form-row__input"
-        type="text"
-        placeholder="Pseudo"
-      />
-    </div>
-    <div class="form-row">
-      <input
-        v-model="password"
-        class="form-row__input"
-        type="password"
-        placeholder="Mot de passe"
-      />
-    </div>
+    <form action="">
+      <div class="form-row">
+        <input
+          v-model="email"
+          class="form-row__input"
+          type="email"
+          placeholder="Adresse mail"
+          autocomplete="username"
+        />
+      </div>
+      <div class="form-row" v-if="mode == 'create'">
+        <input
+          v-model="pseudo"
+          class="form-row__input"
+          type="text"
+          placeholder="Pseudo"
+        />
+      </div>
+      <div class="form-row">
+        <input
+          v-model="password"
+          class="form-row__input"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Mot de passe"
+        />
+      </div>
+    </form>
     <div class="form-row" v-if="status && status != 'loading'">
       {{ status }}
     </div>
