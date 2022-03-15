@@ -2,7 +2,7 @@
 
 Bienvenue sur le 7 eme projet de ma formation OpenClassrooms.
 
-Vous pouvez retrouver le projet sur : [![Netlify Status](https://api.netlify.com/api/v1/badges/e53802a7-f43e-43a7-aa84-c23850f2b68c/deploy-status)](https://app.netlify.com/sites/jb-groupomania/deploys)
+Vous pouvez retrouver le projet sur : [![Netlify Status](https://api.netlify.com/api/v1/badges/e53802a7-f43e-43a7-aa84-c23850f2b68c/deploy-status)](https://jb-groupomania.netlify.app)
 
 ![Preview App](https://res.cloudinary.com/dqo9zo8zm/image/upload/v1647291594/Capture_zwdxn7.png)
 
