@@ -145,7 +145,7 @@ export default {
       return this.listUsers.length;
     },
     isLiked: function () {
-      return this.listUsers.includes(this.userId);
+      return this.listUsers.includes(this.$store.state.user.userId);
     },
     commentsAreNotEmpty: function () {
       return this.comments.length > 0;
@@ -208,10 +208,10 @@ export default {
       API.post("/like/" + this.id).then((response) => {
         if (!response.error) {
           if (response.like) {
-            self.listUsers.push(self.userId);
+            self.listUsers.push(self.$store.state.user.userId);
           } else {
             self.listUsers = self.listUsers.filter(
-              (userId) => userId != self.userId
+              (userId) => userId != self.$store.state.user.userId
             );
           }
         }
