@@ -1,6 +1,7 @@
 # Groupomania
 
 Bienvenue sur le 7 eme projet de ma formation OpenClassrooms.
+
 Vous pouvez retrouver le projet sur : [![Netlify Status](https://api.netlify.com/api/v1/badges/bad68cec-380b-4499-89b3-28ad66be178d/deploy-status)](https://jb-groupomania.netlify.app/)
 
 ![Preview App](https://res.cloudinary.com/dqo9zo8zm/image/upload/v1647291594/Capture_zwdxn7.png)
