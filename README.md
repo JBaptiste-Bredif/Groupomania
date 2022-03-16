@@ -50,7 +50,7 @@ CLOUDINARY_URL=your cloudinary url - Trouvable sur le dashboard Cloudinary
 
 - Puis exécutez la commande :`npm install` pour installer toutes les dépendances du Back
 - Pour mettre en place la base de données en local : `npx sequelize-cli db:create` puis `npx sequelize-cli db:migrate`
-- Sinon rendez-vous dans le fichier config.json présent dans le dossier config et remplissez les informations liées à votre base de données
+- Sinon rendez-vous dans le fichier config.json présent dans le dossier config et remplissez les informations liées à votre base de données puis réitérer les commandes du dessus
 - Pour terminer exécutez la commande : `npm start`, regardez dans le terminal si la connexion à bien réussi.
 
 ## Auteur
