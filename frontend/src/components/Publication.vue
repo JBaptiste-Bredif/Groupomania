@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex w-full flex-col mx-auto justify-around sm:p-5 p-2 bg-white rounded-xl gap-4"
+    class="flex w-full flex-col mx-auto justify-around sm:p-5 p-2 bg-white rounded-xl gap-4 shadow"
   >
     <div class="flex items-center w-full space-x-2">
       <img

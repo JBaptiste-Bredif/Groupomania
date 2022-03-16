@@ -1,7 +1,7 @@
 <template>
   <div class="place-self-start flex flex-col gap-6 max-w-2xl w-full mx-auto">
     <button
-      class="w-full p-2 rounded bg-white rounded-2xl text-left text-neutral-400 my-3"
+      class="w-full p-2 rounded bg-white rounded-2xl text-left text-neutral-400 my-3 shadow"
       @click="togglePublicationModal()"
     >
       <span class="sm:ml-4">Une envie de partager ?</span>
