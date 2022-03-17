@@ -4,6 +4,8 @@ Bienvenue sur le 7 eme projet de ma formation OpenClassrooms.
 
 Vous pouvez retrouver le projet sur : [![Netlify Status](https://api.netlify.com/api/v1/badges/e53802a7-f43e-43a7-aa84-c23850f2b68c/deploy-status)](https://jb-groupomania.netlify.app)
 
+Ainsi que la documentation de l'API sur : [![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)](https://documenter.getpostman.com/view/15480670/UVsMvRCH)
+
 ![Preview App](https://res.cloudinary.com/dqo9zo8zm/image/upload/v1647291594/Capture_zwdxn7.png)
 
 ### Pré-requis
