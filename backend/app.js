@@ -13,6 +13,7 @@ const likeRoutes = require('./routes/route-like')
 const commentRoutes = require('./routes/route-comment')
 const publicationRoutes = require('./routes/route-publication')
 
+app.set('trust proxy', 1) // Heroku - Rate Limit
 app.use(helmet()) // XSS Protection
 app.use(cors()) // Headers Access-Control-Allow-Origin settings
 
